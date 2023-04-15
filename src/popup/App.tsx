@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
+import { addRule, removeRule } from "../hooks/rule"
 import "./App.css"
 
 function App() {
-  const [domain, setDomain] = useState("")
-  const inputDomain = (e: any) => {
-    setDomain(e.target.value)
+  const [regExp, setRegExp] = useState("")
+  const inputRegExp = (e: any) => {
+    setRegExp(e.target.value)
   }
 
   useEffect(() => {
@@ -20,25 +21,13 @@ function App() {
     setNowBlockedRules(rules)
   }
 
-  const addRule = (domainRegExp: string) => {
-    chrome.declarativeNetRequest.updateDynamicRules({
-      addRules: [
-        {
-          action: { type: chrome.declarativeNetRequest.RuleActionType.BLOCK },
-          condition: {
-            regexFilter: domainRegExp,
-          },
-          id: 2,
-        },
-      ],
-    })
+  const onAdd = async () => {
+    await addRule(1, regExp, "z-test-header", "test-desu")
     updateNowBlockedDomains()
   }
 
-  const removeRule = (id: number) => {
-    chrome.declarativeNetRequest.updateDynamicRules({
-      removeRuleIds: [id],
-    })
+  const onRemove = async (id: number) => {
+    await removeRule(id)
     updateNowBlockedDomains()
   }
 
@@ -47,9 +36,9 @@ function App() {
       <div>
         <form>
           <label>
-            Domain <input type="text" value={domain} onChange={inputDomain} />
+            Domain <input type="text" value={regExp} onChange={inputRegExp} />
           </label>
-          <button type="button" onClick={() => addRule(domain)}>
+          <button type="button" onClick={onAdd}>
             Add Block Domain
           </button>
         </form>
@@ -61,7 +50,7 @@ function App() {
             <li key={r.id}>
               <label>
                 {JSON.stringify(r)}
-                <button type="button" onClick={() => removeRule(r.id)}>
+                <button type="button" onClick={() => onRemove(r.id)}>
                   Remove
                 </button>
               </label>

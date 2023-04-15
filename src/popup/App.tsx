@@ -12,13 +12,13 @@ function App() {
     updateNowBlockedDomains()
   }, [])
 
-  const [nowBlockedRules, setNowBlockedRules] = useState<
+  const [enabledRules, setEnabledRules] = useState<
     chrome.declarativeNetRequest.Rule[]
   >([])
 
   const updateNowBlockedDomains = async () => {
     const rules = await chrome.declarativeNetRequest.getDynamicRules()
-    setNowBlockedRules(rules)
+    setEnabledRules(rules)
   }
 
   const onAdd = async () => {
@@ -46,7 +46,7 @@ function App() {
 
       <div>
         <ul>
-          {nowBlockedRules.map((r) => (
+          {enabledRules.map((r) => (
             <li key={r.id}>
               <label>
                 {JSON.stringify(r)}

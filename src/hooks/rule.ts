@@ -79,7 +79,8 @@ export const addHeaderRewriteRules = async (rules: HeaderRewriteRule[]) => {
       case "remove":
         return generateHeaderRemoveOption(rule)
       default:
-        throw new Error(rule satisfies never)
+        const _: never = rule
+        throw new Error()
     }
   })
 

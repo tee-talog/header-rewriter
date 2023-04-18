@@ -1,24 +1,9 @@
 import React from "react"
-
-// TODO 仮
-export type HeaderSetOption = {
-  type: "set"
-  name: string
-  regexFilter: string
-  keyValue: {
-    header: string
-    value: string
-  }[]
-}
-
-export type HeaderRemoveOption = {
-  type: "remove"
-  name: string
-  regexFilter: string
-  headers: string[]
-}
-
-type HeaderRewriteOption = HeaderSetOption | HeaderRemoveOption
+import {
+  HeaderRewriteOption,
+  HeaderSetOption,
+  HeaderRemoveOption,
+} from "../types"
 
 const OptionList: React.FC<{ options: HeaderRewriteOption[] }> = ({
   options,

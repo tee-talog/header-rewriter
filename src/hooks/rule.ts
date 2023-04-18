@@ -1,5 +1,6 @@
 type RuleId = number
 
+// TODO 削除
 export const addRule = async (
   id: RuleId,
   regexFilter: string,
@@ -26,41 +27,6 @@ export const addRule = async (
       },
     ],
   })
-}
-
-// TODO 削除
-type _HeaderSetRule = {
-  id: RuleId
-  regexFilter: string
-  keyValue: {
-    header: string
-    value: string
-  }[]
-}
-
-export const addHeaderSetRules = async (rules: _HeaderSetRule[]) => {
-  const addRules = rules.map<chrome.declarativeNetRequest.Rule>(
-    ({ id, regexFilter, keyValue }) => {
-      const requestHeaders = keyValue.map(({ header, value }) => ({
-        operation: chrome.declarativeNetRequest.HeaderOperation.SET,
-        header,
-        value,
-      }))
-
-      return {
-        id,
-        condition: {
-          regexFilter,
-        },
-        action: {
-          type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
-          requestHeaders,
-        },
-      }
-    },
-  )
-
-  await chrome.declarativeNetRequest.updateDynamicRules({ addRules })
 }
 
 type HeaderSetRule = {
@@ -134,6 +100,7 @@ export const addHeaderRewriteRules = async (rules: HeaderRewriteRule[]) => {
   await chrome.declarativeNetRequest.updateDynamicRules({ addRules })
 }
 
+// TODO 削除
 export const removeRule = async (id: RuleId) => {
   await chrome.declarativeNetRequest.updateDynamicRules({
     removeRuleIds: [id],

@@ -1,5 +1,7 @@
+type RuleId = number
+
 export const addRule = async (
-  id: number,
+  id: RuleId,
   regexFilter: string,
   headerName: string,
   value: string,
@@ -27,7 +29,7 @@ export const addRule = async (
 }
 
 type HeaderSetRule = {
-  id: number
+  id: RuleId
   regexFilter: string
   keyValue: {
     header: string
@@ -60,13 +62,13 @@ export const addHeaderSetRules = async (rules: HeaderSetRule[]) => {
   await chrome.declarativeNetRequest.updateDynamicRules({ addRules })
 }
 
-export const removeRule = async (id: number) => {
+export const removeRule = async (id: RuleId) => {
   await chrome.declarativeNetRequest.updateDynamicRules({
     removeRuleIds: [id],
   })
 }
 
-export const removeRules = async (ids: number[]) => {
+export const removeRules = async (ids: RuleId[]) => {
   await chrome.declarativeNetRequest.updateDynamicRules({
     removeRuleIds: ids,
   })

@@ -1,4 +1,9 @@
-type RuleId = number
+import {
+  HeaderRemoveRule,
+  HeaderRewriteRule,
+  HeaderSetRule,
+  RuleId,
+} from "../types"
 
 // TODO 削除
 export const addRule = async (
@@ -28,25 +33,6 @@ export const addRule = async (
     ],
   })
 }
-
-type HeaderSetRule = {
-  type: "set"
-  id: RuleId
-  regexFilter: string
-  keyValue: {
-    header: string
-    value: string
-  }[]
-}
-
-type HeaderRemoveRule = {
-  type: "remove"
-  id: RuleId
-  regexFilter: string
-  headers: string[]
-}
-
-type HeaderRewriteRule = HeaderSetRule | HeaderRemoveRule
 
 const generateHeaderSetOption = (rule: HeaderSetRule) => {
   const requestHeaders = rule.keyValue.map(({ header, value }) => ({

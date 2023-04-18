@@ -1,7 +1,7 @@
 import { useState } from "react"
 import "./App.css"
-import RuleList from "./RuleList"
-import AddRuleForm from "./AddRuleForm"
+import OptionList from "./OptionList"
+import AddOptionForm from "./AddOptionForm"
 
 const App = () => {
   return (
@@ -12,13 +12,13 @@ const App = () => {
 
       <main>
         <section>
-          <h2>rules</h2>
-          <RuleList rules={[]} />
+          <h2>options</h2>
+          <OptionList options={[]} />
         </section>
 
         <section>
-          <h2>add rule</h2>
-          <AddRuleForm />
+          <h2>add option</h2>
+          <AddOptionForm />
         </section>
       </main>
     </>

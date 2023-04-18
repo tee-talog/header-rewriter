@@ -20,10 +20,12 @@ export type HeaderRemoveOption = {
 
 type HeaderRewriteOption = HeaderSetOption | HeaderRemoveOption
 
-const RuleList: React.FC<{ rules: HeaderRewriteOption[] }> = ({ rules }) => {
-  const ListItemSet: React.FC<{ rule: HeaderSetOption }> = ({ rule }) => (
+const OptionList: React.FC<{ options: HeaderRewriteOption[] }> = ({
+  options,
+}) => {
+  const ListItemSet: React.FC<{ option: HeaderSetOption }> = ({ option }) => (
     <>
-      {rule.keyValue.map(({ header, value }) => (
+      {option.keyValue.map(({ header, value }) => (
         <li key={header}>
           set: {header}: {value}
         </li>
@@ -31,9 +33,11 @@ const RuleList: React.FC<{ rules: HeaderRewriteOption[] }> = ({ rules }) => {
     </>
   )
 
-  const ListItemRemove: React.FC<{ rule: HeaderRemoveOption }> = ({ rule }) => (
+  const ListItemRemove: React.FC<{ option: HeaderRemoveOption }> = ({
+    option,
+  }) => (
     <>
-      {rule.headers.map((header) => (
+      {option.headers.map((header) => (
         <li key={header}>remove: {header}</li>
       ))}
     </>
@@ -42,14 +46,14 @@ const RuleList: React.FC<{ rules: HeaderRewriteOption[] }> = ({ rules }) => {
   return (
     <table>
       <tbody>
-        {rules.map((rule) => (
-          <tr key={rule.regexFilter}>
-            <td>rule name: {rule.name}</td>
-            <td>regexp: {rule.regexFilter}</td>
+        {options.map((option) => (
+          <tr key={option.regexFilter}>
+            <td>option name: {option.name}</td>
+            <td>regexp: {option.regexFilter}</td>
             <td>
               <ul>
-                {rule.type === "set" && <ListItemSet rule={rule} />}
-                {rule.type === "remove" && <ListItemRemove rule={rule} />}
+                {option.type === "set" && <ListItemSet option={option} />}
+                {option.type === "remove" && <ListItemRemove option={option} />}
               </ul>
             </td>
           </tr>
@@ -59,4 +63,4 @@ const RuleList: React.FC<{ rules: HeaderRewriteOption[] }> = ({ rules }) => {
   )
 }
 
-export default RuleList
+export default OptionList

@@ -1,22 +1,38 @@
-import { SubmitHandler, useForm } from "react-hook-form"
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form"
 
 type Inputs = {
   ruleName: string
   regExp: string
   type: "set" | "remove"
-  header: string
-  value: string
+  keyValue: {
+    header: string
+    value?: string
+  }[]
 }
 
 const AddOptionForm: React.FC<{
   onSubmit: SubmitHandler<Inputs>
 }> = ({ onSubmit }) => {
   const {
+    control,
     register,
     handleSubmit,
     watch,
     formState: { isValid },
   } = useForm<Inputs>({ defaultValues: { type: "set" } })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "keyValue",
+  })
+
+  const addHeaderValueField = () => {
+    append({ header: "", value: "" })
+  }
+
+  const removeHeaderValueField = (index: number) => {
+    remove(index)
+  }
 
   const isTypeSet = watch("type") === "set"
 
@@ -39,22 +55,37 @@ const AddOptionForm: React.FC<{
       </label>
 
       <ul>
-        <li>
-          <label>
-            header
-            <input type="text" {...register("header", { required: true })} />
-          </label>
-          {isTypeSet && (
-            <>
-              <label>
-                value
-                <input type="text" {...register("value")} />
-              </label>
-            </>
-          )}
-        </li>
+        {fields.map((field, index) => (
+          <li key={field.id}>
+            <label>
+              header
+              <input
+                type="text"
+                {...register(`keyValue.${index}.header` as const, {
+                  required: true,
+                })}
+              />
+            </label>
+            {isTypeSet && (
+              <>
+                <label>
+                  value
+                  <input
+                    type="text"
+                    {...register(`keyValue.${index}.value` as const)}
+                  />
+                </label>
+              </>
+            )}
+            <button type="button" onClick={() => removeHeaderValueField(index)}>
+              remove
+            </button>
+          </li>
+        ))}
       </ul>
-      <button type="button">+</button>
+      <button type="button" onClick={addHeaderValueField}>
+        +
+      </button>
 
       <hr />
 

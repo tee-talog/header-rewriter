@@ -28,7 +28,8 @@ export const addRule = async (
   })
 }
 
-type HeaderSetRule = {
+// TODO 削除
+type _HeaderSetRule = {
   id: RuleId
   regexFilter: string
   keyValue: {
@@ -37,7 +38,7 @@ type HeaderSetRule = {
   }[]
 }
 
-export const addHeaderSetRules = async (rules: HeaderSetRule[]) => {
+export const addHeaderSetRules = async (rules: _HeaderSetRule[]) => {
   const addRules = rules.map<chrome.declarativeNetRequest.Rule>(
     ({ id, regexFilter, keyValue }) => {
       const requestHeaders = keyValue.map(({ header, value }) => ({
@@ -62,66 +63,71 @@ export const addHeaderSetRules = async (rules: HeaderSetRule[]) => {
   await chrome.declarativeNetRequest.updateDynamicRules({ addRules })
 }
 
-type HeaderRewriteRule = {
+type HeaderSetRule = {
+  type: "set"
   id: RuleId
   regexFilter: string
-} & (
-  | {
-      type: "set"
-      keyValue: {
-        header: string
-        value: string
-      }[]
-    }
-  | {
-      type: "remove"
-      headers: string[]
-    }
-)
+  keyValue: {
+    header: string
+    value: string
+  }[]
+}
+
+type HeaderRemoveRule = {
+  type: "remove"
+  id: RuleId
+  regexFilter: string
+  headers: string[]
+}
+
+type HeaderRewriteRule = HeaderSetRule | HeaderRemoveRule
+
+const generateHeaderSetOption = (rule: HeaderSetRule) => {
+  const requestHeaders = rule.keyValue.map(({ header, value }) => ({
+    operation: chrome.declarativeNetRequest.HeaderOperation.SET,
+    header,
+    value,
+  }))
+
+  return {
+    id: rule.id,
+    condition: {
+      regexFilter: rule.regexFilter,
+    },
+    action: {
+      type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+      requestHeaders,
+    },
+  }
+}
+
+const generateHeaderRemoveOption = (rule: HeaderRemoveRule) => {
+  const requestHeaders = rule.headers.map((header) => ({
+    operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE,
+    header,
+  }))
+
+  return {
+    id: rule.id,
+    condition: {
+      regexFilter: rule.regexFilter,
+    },
+    action: {
+      type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+      requestHeaders,
+    },
+  }
+}
 
 export const addHeaderRewriteRules = async (rules: HeaderRewriteRule[]) => {
   const addRules = rules.map<chrome.declarativeNetRequest.Rule>((rule) => {
     switch (rule.type) {
-      case "set": {
-        const requestHeaders = rule.keyValue.map(({ header, value }) => ({
-          operation: chrome.declarativeNetRequest.HeaderOperation.SET,
-          header,
-          value,
-        }))
-
-        return {
-          id: rule.id,
-          condition: {
-            regexFilter: rule.regexFilter,
-          },
-          action: {
-            type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
-            requestHeaders,
-          },
-        }
-      }
-
-      case "remove": {
-        const requestHeaders = rule.headers.map((header) => ({
-          operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE,
-          header,
-        }))
-
-        return {
-          id: rule.id,
-          condition: {
-            regexFilter: rule.regexFilter,
-          },
-          action: {
-            type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
-            requestHeaders,
-          },
-        }
-      }
-
-      default: {
+      case "set":
+        return generateHeaderSetOption(rule)
+      case "remove":
+        return generateHeaderRemoveOption(rule)
+      default:
         throw new Error(rule satisfies never)
-      }
     }
   })
 

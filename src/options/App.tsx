@@ -3,7 +3,7 @@ import "./App.css"
 import OptionList from "./OptionList"
 import AddOptionForm from "./AddOptionForm"
 import { SubmitHandler } from "react-hook-form"
-import { loadOptions } from "../hooks/storage"
+import { loadOptions, saveOptions } from "../hooks/storage"
 import { HeaderRewriteOption } from "../types"
 
 // TODO 仮
@@ -17,10 +17,39 @@ type Inputs = {
   }[]
 }
 
+const headerRewriteOptionFrom = (value: Inputs): HeaderRewriteOption => {
+  const { ruleName, regExp, type, keyValue } = value
+  switch (type) {
+    case "set":
+      return {
+        name: ruleName,
+        regexFilter: regExp,
+        type: "set",
+        keyValue: keyValue.map(({ header, value }) => ({
+          header,
+          value: value ?? "",
+        })),
+      }
+    case "remove":
+      return {
+        name: ruleName,
+        regexFilter: regExp,
+        type: "remove",
+        headers: keyValue.map(({ header }) => header),
+      }
+    default:
+      throw new Error()
+  }
+}
+
 const App = () => {
   // TODO 子側でバリデーション。zod を使うと型変換ができるみたい
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data)
+    const option = headerRewriteOptionFrom(data)
+    // TODO await
+    saveOptions([...options, option]).then(() => {
+      load()
+    })
   }
 
   const [options, setOptions] = useState<HeaderRewriteOption[]>([])

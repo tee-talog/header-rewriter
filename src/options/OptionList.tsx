@@ -31,8 +31,9 @@ const OptionList: React.FC<{ options: HeaderRewriteOption[] }> = ({
   return (
     <table>
       <tbody>
-        {options.map((option) => (
-          <tr key={option.regexFilter}>
+        {/* TODO key をユニークにできるようにしたい */}
+        {options.map((option, i) => (
+          <tr key={option.regexFilter + i}>
             <td>option name: {option.name}</td>
             <td>regexp: {option.regexFilter}</td>
             <td>

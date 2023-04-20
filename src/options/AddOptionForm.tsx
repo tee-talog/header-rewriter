@@ -19,7 +19,9 @@ const AddOptionForm: React.FC<{
     handleSubmit,
     watch,
     formState: { isValid },
-  } = useForm<Inputs>({ defaultValues: { type: "set" } })
+  } = useForm<Inputs>({
+    defaultValues: { type: "set", keyValue: [{ header: "", value: "" }] },
+  })
 
   const { fields, append, remove } = useFieldArray({
     control,

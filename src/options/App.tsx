@@ -4,7 +4,7 @@ import OptionList from "./OptionList"
 import AddOptionForm from "./AddOptionForm"
 import { SubmitHandler } from "react-hook-form"
 import { loadOptions, saveOptions } from "../hooks/storage"
-import { HeaderRewriteOption } from "../types"
+import { HeaderRewriteOption, UuidString } from "../types"
 
 // TODO 仮
 type Inputs = {
@@ -58,6 +58,14 @@ const App = () => {
     })
   }
 
+  const onRemove = (id: UuidString) => {
+    // TODO await
+    const items = options.filter((option) => option.id !== id)
+    saveOptions(items).then(() => {
+      load()
+    })
+  }
+
   const [options, setOptions] = useState<HeaderRewriteOption[]>([])
 
   const load = async () => {
@@ -77,7 +85,7 @@ const App = () => {
       <main>
         <section>
           <h2>options</h2>
-          <OptionList options={options} />
+          <OptionList options={options} onRemove={onRemove} />
         </section>
 
         <section>

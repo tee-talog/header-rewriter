@@ -3,11 +3,13 @@ import {
   HeaderRewriteOption,
   HeaderSetOption,
   HeaderRemoveOption,
+  UuidString,
 } from "../types"
 
-const OptionList: React.FC<{ options: HeaderRewriteOption[] }> = ({
-  options,
-}) => {
+const OptionList: React.FC<{
+  options: HeaderRewriteOption[]
+  onRemove: (id: UuidString) => void
+}> = ({ options, onRemove }) => {
   const ListItemSet: React.FC<{ option: HeaderSetOption }> = ({ option }) => (
     <>
       {option.keyValue.map(({ header, value }) => (
@@ -40,6 +42,11 @@ const OptionList: React.FC<{ options: HeaderRewriteOption[] }> = ({
                 {option.type === "set" && <ListItemSet option={option} />}
                 {option.type === "remove" && <ListItemRemove option={option} />}
               </ul>
+            </td>
+            <td>
+              <button type="button" onClick={() => onRemove(option.id)}>
+                remove
+              </button>
             </td>
           </tr>
         ))}

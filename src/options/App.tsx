@@ -19,9 +19,12 @@ type Inputs = {
 
 const headerRewriteOptionFrom = (value: Inputs): HeaderRewriteOption => {
   const { ruleName, regExp, type, keyValue } = value
+  const id = crypto.randomUUID()
+
   switch (type) {
     case "set":
       return {
+        id,
         name: ruleName,
         regexFilter: regExp,
         type: "set",
@@ -30,13 +33,16 @@ const headerRewriteOptionFrom = (value: Inputs): HeaderRewriteOption => {
           value: value ?? "",
         })),
       }
+
     case "remove":
       return {
+        id,
         name: ruleName,
         regexFilter: regExp,
         type: "remove",
         headers: keyValue.map(({ header }) => header),
       }
+
     default:
       throw new Error()
   }

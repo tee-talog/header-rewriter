@@ -21,7 +21,10 @@ export type HeaderRemoveRule = {
 export type HeaderRewriteRule = HeaderSetRule | HeaderRemoveRule
 
 // ユーザーが設定するオプション
+export type UuidString = ReturnType<typeof crypto.randomUUID>
+
 export type HeaderSetOption = {
+  id: UuidString
   type: "set"
   name: string
   regexFilter: string
@@ -32,6 +35,7 @@ export type HeaderSetOption = {
 }
 
 export type HeaderRemoveOption = {
+  id: UuidString
   type: "remove"
   name: string
   regexFilter: string

@@ -50,20 +50,16 @@ const headerRewriteOptionFrom = (value: Inputs): HeaderRewriteOption => {
 
 const App = () => {
   // TODO 子側でバリデーション。zod を使うと型変換ができるみたい
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const option = headerRewriteOptionFrom(data)
-    // TODO await
-    saveOptions([...options, option]).then(() => {
-      load()
-    })
+    await saveOptions([...options, option])
+    load()
   }
 
-  const onRemove = (id: UuidString) => {
-    // TODO await
+  const onRemove = async (id: UuidString) => {
     const items = options.filter((option) => option.id !== id)
-    saveOptions(items).then(() => {
-      load()
-    })
+    await saveOptions(items)
+    load()
   }
 
   const [options, setOptions] = useState<HeaderRewriteOption[]>([])

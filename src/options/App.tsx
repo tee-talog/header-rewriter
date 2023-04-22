@@ -15,6 +15,7 @@ const convertToRule = (id: number, formData: FormInputs): Rule => {
   return {
     id,
     name: formData.ruleName,
+    enabled: false,
     rule: {
       id,
       action: {

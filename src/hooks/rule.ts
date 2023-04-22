@@ -6,3 +6,6 @@ export const removeRules = async (ids: number[]) => {
     removeRuleIds: ids,
   })
 }
+
+export const fetchRules = async () =>
+  chrome.declarativeNetRequest.getDynamicRules()

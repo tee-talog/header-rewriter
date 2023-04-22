@@ -15,6 +15,19 @@ const convertToOption = (
       ? chrome.declarativeNetRequest.HeaderOperation.SET
       : chrome.declarativeNetRequest.HeaderOperation.REMOVE
 
+  const requestHeaders = [
+    formData.type === "set"
+      ? {
+          operation,
+          header: formData.key,
+          value: formData.value,
+        }
+      : {
+          operation,
+          header: formData.key,
+        },
+  ]
+
   return {
     id,
     name: formData.name,
@@ -23,13 +36,7 @@ const convertToOption = (
       id,
       action: {
         type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
-        requestHeaders: [
-          {
-            operation,
-            header: formData.key,
-            value: formData.value,
-          },
-        ],
+        requestHeaders,
       },
       condition: {
         regexFilter: formData.pattern,

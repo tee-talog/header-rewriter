@@ -1,11 +1,11 @@
-import { HeaderRewriteRule } from "../types"
+import { HeaderRewriteOption } from "../types"
 
 const RULE_KEY = "RULE_KEY"
 
-export const saveRules = (rules: HeaderRewriteRule[]) =>
+export const saveOptions = (rules: HeaderRewriteOption[]) =>
   chrome.storage.local.set({ [RULE_KEY]: rules })
 
-export const loadRules = async (): Promise<HeaderRewriteRule[]> => {
+export const loadOptions = async (): Promise<HeaderRewriteOption[]> => {
   const value = await chrome.storage.local.get(RULE_KEY)
-  return value[RULE_KEY] as HeaderRewriteRule[]
+  return value[RULE_KEY] as HeaderRewriteOption[]
 }

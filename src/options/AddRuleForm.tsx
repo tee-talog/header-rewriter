@@ -1,14 +1,14 @@
 import { SubmitHandler, useForm } from "react-hook-form"
 
 export type FormInputs = {
-  ruleName: string
-  regExp: string
+  name: string
+  pattern: string
   type: "set" | "remove"
   key: string
   value?: string
 }
 
-const AddRuleForm: React.FC<{
+const AddOptionForm: React.FC<{
   onSubmit: SubmitHandler<FormInputs>
 }> = ({ onSubmit }) => {
   const {
@@ -25,12 +25,12 @@ const AddRuleForm: React.FC<{
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>
-        rule name
-        <input type="text" {...register("ruleName", { required: true })} />
+        name
+        <input type="text" {...register("name", { required: true })} />
       </label>
       <label>
-        regexp
-        <input type="text" {...register("regExp", { required: true })} />
+        pattern
+        <input type="text" {...register("pattern", { required: true })} />
       </label>
       <label>
         type
@@ -61,4 +61,4 @@ const AddRuleForm: React.FC<{
   )
 }
 
-export default AddRuleForm
+export default AddOptionForm

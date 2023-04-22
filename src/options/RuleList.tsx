@@ -1,16 +1,15 @@
 import React from "react"
-import { HeaderRewriteRule } from "../types"
+import { HeaderRewriteOption } from "../types"
 
-const RuleList: React.FC<{
-  rules: HeaderRewriteRule[]
+const OptionList: React.FC<{
+  options: HeaderRewriteOption[]
   onRemove: (id: number) => void
-}> = ({ rules, onRemove }) => {
-  const ListItem: React.FC<{ rule: chrome.declarativeNetRequest.Rule }> = ({
-    rule,
-  }) => (
+}> = ({ options, onRemove }) => {
+  const ListItem: React.FC<{
+    operation: chrome.declarativeNetRequest.HeaderOperation | undefined
+  }> = ({ operation }) => (
     <li>
-      {rule.action.requestHeaders?.[0].operation ===
-      chrome.declarativeNetRequest.HeaderOperation.SET
+      {operation === chrome.declarativeNetRequest.HeaderOperation.SET
         ? "set"
         : "remove"}
     </li>
@@ -19,17 +18,19 @@ const RuleList: React.FC<{
   return (
     <table>
       <tbody>
-        {rules.map((rule) => (
-          <tr key={rule.id}>
-            <td>option name: {rule.name}</td>
-            <td>regexp: {rule.rule.condition.regexFilter}</td>
+        {options.map((option) => (
+          <tr key={option.id}>
+            <td>option name: {option.name}</td>
+            <td>regexp: {option.rule.condition.regexFilter}</td>
             <td>
               <ul>
-                <ListItem rule={rule.rule} />
+                <ListItem
+                  operation={option.rule.action.requestHeaders?.[0].operation}
+                />
               </ul>
             </td>
             <td>
-              <button type="button" onClick={() => onRemove(rule.id)}>
+              <button type="button" onClick={() => onRemove(option.id)}>
                 remove
               </button>
             </td>
@@ -40,4 +41,4 @@ const RuleList: React.FC<{
   )
 }
 
-export default RuleList
+export default OptionList

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import "./App.css"
-import { HeaderRewriteRule } from "../types"
-import { loadRules, saveRules } from "../hooks/storage"
+import { HeaderRewriteOption } from "../types"
+import { loadOptions, saveOptions } from "../hooks/storage"
 import { addRules, removeRules } from "../hooks/rule"
 
 const convertToType = (
@@ -10,20 +10,19 @@ const convertToType = (
   type === chrome.declarativeNetRequest.HeaderOperation.SET ? "set" : "remove"
 
 const App = () => {
-  const [rules, setRules] = useState<HeaderRewriteRule[]>([])
+  const [options, setOptions] = useState<HeaderRewriteOption[]>([])
 
   // ルールの ON/OFF を切り替える
   const changeEnabled = (id: number, enabled: boolean) => {
-    const items = rules.map((rule) =>
-      rule.id === id ? { ...rule, enabled } : rule,
+    const items = options.map((option) =>
+      option.id === id ? { ...option, enabled } : option,
     )
-    setRules(items)
-    saveRules(items)
+    setOptions(items)
+    saveOptions(items)
 
     if (enabled) {
-      const item = rules.find((rule) => rule.id === id)
+      const item = options.find((option) => option.id === id)
       if (item) {
-        console.log(item)
         addRules([item.rule])
       }
     } else {
@@ -32,8 +31,8 @@ const App = () => {
   }
 
   const load = async () => {
-    const items = await loadRules()
-    setRules(items)
+    const items = await loadOptions()
+    setOptions(items)
   }
   useEffect(() => {
     load()
@@ -57,20 +56,20 @@ const App = () => {
           </thead>
 
           <tbody>
-            {rules.map((rule) => (
-              <tr key={rule.id}>
-                <td>{rule.name}</td>
-                <td>{rule.rule.condition.regexFilter}</td>
+            {options.map((option) => (
+              <tr key={option.id}>
+                <td>{option.name}</td>
+                <td>{option.rule.condition.regexFilter}</td>
                 <td>
                   {convertToType(
-                    rule.rule.action.requestHeaders?.[0].operation,
+                    option.rule.action.requestHeaders?.[0].operation,
                   )}
                 </td>
                 <td>
                   <input
                     type="checkbox"
-                    checked={rule.enabled}
-                    onChange={() => changeEnabled(rule.id, !rule.enabled)}
+                    checked={option.enabled}
+                    onChange={() => changeEnabled(option.id, !option.enabled)}
                   />
                 </td>
               </tr>

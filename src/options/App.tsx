@@ -1,12 +1,15 @@
 import "./App.css"
-import RuleList from "./RuleList"
-import AddRuleForm, { FormInputs } from "./AddRuleForm"
-import { loadRules, saveRules } from "../hooks/storage"
-import { HeaderRewriteRule } from "../types"
+import OptionList from "./RuleList"
+import AddOptionForm, { FormInputs } from "./AddRuleForm"
+import { loadOptions, saveOptions } from "../hooks/storage"
+import { HeaderRewriteOption } from "../types"
 import { useEffect, useState } from "react"
 
-// フォームの値を Rule に変換する
-const convertToRule = (id: number, formData: FormInputs): HeaderRewriteRule => {
+// フォームの値をオプションに変換する
+const convertToOption = (
+  id: number,
+  formData: FormInputs,
+): HeaderRewriteOption => {
   const operation =
     formData.type === "set"
       ? chrome.declarativeNetRequest.HeaderOperation.SET
@@ -14,7 +17,7 @@ const convertToRule = (id: number, formData: FormInputs): HeaderRewriteRule => {
 
   return {
     id,
-    name: formData.ruleName,
+    name: formData.name,
     enabled: false,
     rule: {
       id,
@@ -29,43 +32,43 @@ const convertToRule = (id: number, formData: FormInputs): HeaderRewriteRule => {
         ],
       },
       condition: {
-        regexFilter: formData.regExp,
+        regexFilter: formData.pattern,
       },
     },
   }
 }
 
 // 使っていない最小の ID を返す
-const findAllocatableId = (rules: HeaderRewriteRule[]) => {
-  if (rules.length === 0) {
+const findAllocatableId = (options: HeaderRewriteOption[]) => {
+  if (options.length === 0) {
     return 1
   }
 
-  const ids = rules.map((rule) => rule.id)
+  const ids = options.map((option) => option.id)
   ids.sort()
   const allocatable = ids.findIndex((id, i) => id !== i + 1)
   return allocatable === -1 ? allocatable : ids.length + 1
 }
 
 const App = () => {
-  const [rules, setRules] = useState<HeaderRewriteRule[]>([])
+  const [options, setOptions] = useState<HeaderRewriteOption[]>([])
 
   const onRemove = (id: number) => {
-    const items = rules.filter((rule) => rule.id !== id)
-    setRules(items)
-    saveRules(items)
+    const items = options.filter((option) => option.id !== id)
+    setOptions(items)
+    saveOptions(items)
   }
 
   const onSubmit = (formData: FormInputs) => {
-    const id = findAllocatableId(rules)
-    const rule = convertToRule(id, formData)
-    setRules([...rules, rule])
-    saveRules([...rules, rule])
+    const id = findAllocatableId(options)
+    const option = convertToOption(id, formData)
+    setOptions([...options, option])
+    saveOptions([...options, option])
   }
 
   const load = async () => {
-    const items = await loadRules()
-    setRules(items)
+    const items = await loadOptions()
+    setOptions(items)
   }
   useEffect(() => {
     load()
@@ -80,12 +83,12 @@ const App = () => {
       <main>
         <section>
           <h2>options</h2>
-          <RuleList rules={rules} onRemove={onRemove} />
+          <OptionList options={options} onRemove={onRemove} />
         </section>
 
         <section>
           <h2>add option</h2>
-          <AddRuleForm onSubmit={onSubmit} />
+          <AddOptionForm onSubmit={onSubmit} />
         </section>
       </main>
     </>

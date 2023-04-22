@@ -1,4 +1,4 @@
-export type HeaderRewriteRule = {
+export type HeaderRewriteOption = {
   name: string
   id: number
   rule: chrome.declarativeNetRequest.Rule

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import "./App.css"
-import { Rule } from "../types"
+import { HeaderRewriteRule } from "../types"
 import { loadRules, saveRules } from "../hooks/storage"
 import { addRules, removeRules } from "../hooks/rule"
 
@@ -10,7 +10,7 @@ const convertToType = (
   type === chrome.declarativeNetRequest.HeaderOperation.SET ? "set" : "remove"
 
 const App = () => {
-  const [rules, setRules] = useState<Rule[]>([])
+  const [rules, setRules] = useState<HeaderRewriteRule[]>([])
 
   // ルールの ON/OFF を切り替える
   const changeEnabled = (id: number, enabled: boolean) => {

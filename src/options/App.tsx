@@ -2,11 +2,11 @@ import "./App.css"
 import RuleList from "./RuleList"
 import AddRuleForm, { FormInputs } from "./AddRuleForm"
 import { loadRules, saveRules } from "../hooks/storage"
-import { Rule } from "../types"
+import { HeaderRewriteRule } from "../types"
 import { useEffect, useState } from "react"
 
 // フォームの値を Rule に変換する
-const convertToRule = (id: number, formData: FormInputs): Rule => {
+const convertToRule = (id: number, formData: FormInputs): HeaderRewriteRule => {
   const operation =
     formData.type === "set"
       ? chrome.declarativeNetRequest.HeaderOperation.SET
@@ -36,7 +36,7 @@ const convertToRule = (id: number, formData: FormInputs): Rule => {
 }
 
 // 使っていない最小の ID を返す
-const findAllocatableId = (rules: Rule[]) => {
+const findAllocatableId = (rules: HeaderRewriteRule[]) => {
   if (rules.length === 0) {
     return 1
   }
@@ -48,7 +48,7 @@ const findAllocatableId = (rules: Rule[]) => {
 }
 
 const App = () => {
-  const [rules, setRules] = useState<Rule[]>([])
+  const [rules, setRules] = useState<HeaderRewriteRule[]>([])
 
   const onRemove = (id: number) => {
     const items = rules.filter((rule) => rule.id !== id)

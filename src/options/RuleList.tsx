@@ -1,8 +1,8 @@
 import React from "react"
-import { Rule } from "../types"
+import { HeaderRewriteRule } from "../types"
 
 const RuleList: React.FC<{
-  rules: Rule[]
+  rules: HeaderRewriteRule[]
   onRemove: (id: number) => void
 }> = ({ rules, onRemove }) => {
   const ListItem: React.FC<{ rule: chrome.declarativeNetRequest.Rule }> = ({

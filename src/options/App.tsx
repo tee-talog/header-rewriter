@@ -75,7 +75,7 @@ const App = () => {
   }, [])
 
   return (
-    <>
+    <div style={{ width: "800px" }}>
       <header>
         <h1>options</h1>
       </header>
@@ -91,7 +91,7 @@ const App = () => {
           <AddOptionForm onSubmit={onSubmit} />
         </section>
       </main>
-    </>
+    </div>
   )
 }
 

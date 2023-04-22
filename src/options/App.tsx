@@ -38,13 +38,13 @@ const convertToRule = (id: number, formData: FormInputs): Rule => {
 // 使っていない最小の ID を返す
 const findAllocatableId = (rules: Rule[]) => {
   if (rules.length === 0) {
-    return 0
+    return 1
   }
 
   const ids = rules.map((rule) => rule.id)
   ids.sort()
-  const allocatable = ids.findIndex((id, i) => id !== i)
-  return allocatable === -1 ? allocatable : ids.length
+  const allocatable = ids.findIndex((id, i) => id !== i + 1)
+  return allocatable === -1 ? allocatable : ids.length + 1
 }
 
 const App = () => {

@@ -63,3 +63,7 @@ export const removeRules = async (ids: RuleId[]) => {
     removeRuleIds: ids,
   })
 }
+
+//
+export const addRules = (rules: chrome.declarativeNetRequest.Rule[]) =>
+  chrome.declarativeNetRequest.updateDynamicRules({ addRules: rules })

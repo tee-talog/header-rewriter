@@ -5,19 +5,9 @@ import AddOptionForm from "./AddOptionForm"
 import { SubmitHandler } from "react-hook-form"
 import { loadOptions, saveOptions } from "../hooks/storage"
 import { HeaderRewriteOption, UuidString } from "../types"
+import { FormInputs } from "./AddOptionForm"
 
-// TODO 仮
-type Inputs = {
-  ruleName: string
-  regExp: string
-  type: "set" | "remove"
-  keyValue: {
-    header: string
-    value?: string
-  }[]
-}
-
-const headerRewriteOptionFrom = (value: Inputs): HeaderRewriteOption => {
+const headerRewriteOptionFrom = (value: FormInputs): HeaderRewriteOption => {
   const { ruleName, regExp, type, keyValue } = value
   const id = crypto.randomUUID()
 
@@ -50,7 +40,7 @@ const headerRewriteOptionFrom = (value: Inputs): HeaderRewriteOption => {
 
 const App = () => {
   // TODO 子側でバリデーション。zod を使うと型変換ができるみたい
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     const option = headerRewriteOptionFrom(data)
     await saveOptions([...options, option])
     load()

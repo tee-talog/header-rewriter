@@ -1,6 +1,6 @@
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form"
 
-type Inputs = {
+export type FormInputs = {
   ruleName: string
   regExp: string
   type: "set" | "remove"
@@ -11,7 +11,7 @@ type Inputs = {
 }
 
 const AddOptionForm: React.FC<{
-  onSubmit: SubmitHandler<Inputs>
+  onSubmit: SubmitHandler<FormInputs>
 }> = ({ onSubmit }) => {
   const {
     control,
@@ -19,7 +19,7 @@ const AddOptionForm: React.FC<{
     handleSubmit,
     watch,
     formState: { isValid },
-  } = useForm<Inputs>({
+  } = useForm<FormInputs>({
     defaultValues: { type: "set", keyValue: [{ header: "", value: "" }] },
   })
 

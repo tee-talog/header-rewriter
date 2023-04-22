@@ -1,13 +1,12 @@
 import "./App.css"
 import RuleList from "./RuleList"
 import AddRuleForm, { FormInputs } from "./AddRuleForm"
-import { saveRules } from "../hooks/storage"
+import { loadRules, saveRules } from "../hooks/storage"
 import { Rule } from "../types"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-const convertToRule = (formData: FormInputs): Rule => {
-  // TODO
-  const id = 0
+// フォームの値を Rule に変換する
+const convertToRule = (id: number, formData: FormInputs): Rule => {
   const operation =
     formData.type === "set"
       ? chrome.declarativeNetRequest.HeaderOperation.SET
@@ -35,17 +34,41 @@ const convertToRule = (formData: FormInputs): Rule => {
   }
 }
 
+// 使っていない最小の ID を返す
+const findAllocatableId = (rules: Rule[]) => {
+  if (rules.length === 0) {
+    return 0
+  }
+
+  const ids = rules.map((rule) => rule.id)
+  ids.sort()
+  const allocatable = ids.findIndex((id, i) => id !== i)
+  return allocatable === -1 ? allocatable : ids.length
+}
+
 const App = () => {
   const [rules, setRules] = useState<Rule[]>([])
 
   const onRemove = (id: number) => {
-    setRules(rules.filter((rule) => rule.id !== id))
+    const items = rules.filter((rule) => rule.id !== id)
+    setRules(items)
+    saveRules(items)
   }
 
   const onSubmit = (formData: FormInputs) => {
-    const rule = convertToRule(formData)
-    saveRules([rule])
+    const id = findAllocatableId(rules)
+    const rule = convertToRule(id, formData)
+    setRules([...rules, rule])
+    saveRules([...rules, rule])
   }
+
+  const load = async () => {
+    const items = await loadRules()
+    setRules(items)
+  }
+  useEffect(() => {
+    load()
+  }, [])
 
   return (
     <>

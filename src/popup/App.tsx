@@ -9,6 +9,13 @@ const convertToType = (type: chrome.declarativeNetRequest.HeaderOperation) =>
 const App = () => {
   const [rules, setRules] = useState<Rule[]>([])
 
+  const changeEnabled = (id: number, enabled: boolean) => {
+    const items = rules.map((rule) =>
+      rule.id === id ? { ...rule, enabled } : rule,
+    )
+    setRules(items)
+  }
+
   const load = async () => {
     const items = await loadRules()
     setRules(items)
@@ -43,7 +50,11 @@ const App = () => {
                   <td>{rule.rule.condition.regexFilter}</td>
                   <td>{operation && convertToType(operation)}</td>
                   <td>
-                    <input type="checkbox" checked={rule.enabled} />
+                    <input
+                      type="checkbox"
+                      checked={rule.enabled}
+                      onChange={() => changeEnabled(rule.id, !rule.enabled)}
+                    />
                   </td>
                 </tr>
               )

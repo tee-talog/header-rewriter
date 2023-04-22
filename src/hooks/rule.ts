@@ -5,35 +5,6 @@ import {
   RuleId,
 } from "../types"
 
-// TODO 削除
-export const addRule = async (
-  id: RuleId,
-  regexFilter: string,
-  headerName: string,
-  value: string,
-) => {
-  await chrome.declarativeNetRequest.updateDynamicRules({
-    addRules: [
-      {
-        action: {
-          type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
-          requestHeaders: [
-            {
-              header: headerName,
-              operation: chrome.declarativeNetRequest.HeaderOperation.SET,
-              value,
-            },
-          ],
-        },
-        condition: {
-          regexFilter,
-        },
-        id,
-      },
-    ],
-  })
-}
-
 const generateHeaderSetOption = (rule: HeaderSetRule) => {
   const requestHeaders = rule.keyValue.map(({ header, value }) => ({
     operation: chrome.declarativeNetRequest.HeaderOperation.SET,
@@ -85,13 +56,6 @@ export const addHeaderRewriteRules = async (rules: HeaderRewriteRule[]) => {
   })
 
   await chrome.declarativeNetRequest.updateDynamicRules({ addRules })
-}
-
-// TODO 削除
-export const removeRule = async (id: RuleId) => {
-  await chrome.declarativeNetRequest.updateDynamicRules({
-    removeRuleIds: [id],
-  })
 }
 
 export const removeRules = async (ids: RuleId[]) => {

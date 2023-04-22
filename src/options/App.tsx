@@ -1,62 +1,71 @@
-import { useEffect, useState } from "react"
 import "./App.css"
-import OptionList from "./OptionList"
-import AddOptionForm from "./AddOptionForm"
-import { SubmitHandler } from "react-hook-form"
-import { loadOptions, saveOptions } from "../hooks/storage"
-import { HeaderRewriteOption, UuidString } from "../types"
-import { FormInputs } from "./AddOptionForm"
+import RuleList from "./RuleList"
+import AddRuleForm, { FormInputs } from "./AddRuleForm"
+import { loadRules, saveRules } from "../hooks/storage"
+import { Rule } from "../types"
+import { useEffect, useState } from "react"
 
-const headerRewriteOptionFrom = (value: FormInputs): HeaderRewriteOption => {
-  const { ruleName, regExp, type, keyValue } = value
-  const id = crypto.randomUUID()
+// フォームの値を Rule に変換する
+const convertToRule = (id: number, formData: FormInputs): Rule => {
+  const operation =
+    formData.type === "set"
+      ? chrome.declarativeNetRequest.HeaderOperation.SET
+      : chrome.declarativeNetRequest.HeaderOperation.REMOVE
 
-  switch (type) {
-    case "set":
-      return {
-        id,
-        name: ruleName,
-        regexFilter: regExp,
-        type: "set",
-        keyValue: keyValue.map(({ header, value }) => ({
-          header,
-          value: value ?? "",
-        })),
-      }
-
-    case "remove":
-      return {
-        id,
-        name: ruleName,
-        regexFilter: regExp,
-        type: "remove",
-        headers: keyValue.map(({ header }) => header),
-      }
-
-    default:
-      throw new Error()
+  return {
+    id,
+    name: formData.ruleName,
+    enabled: false,
+    rule: {
+      id,
+      action: {
+        type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+        requestHeaders: [
+          {
+            operation,
+            header: formData.key,
+            value: formData.value,
+          },
+        ],
+      },
+      condition: {
+        regexFilter: formData.regExp,
+      },
+    },
   }
 }
 
+// 使っていない最小の ID を返す
+const findAllocatableId = (rules: Rule[]) => {
+  if (rules.length === 0) {
+    return 0
+  }
+
+  const ids = rules.map((rule) => rule.id)
+  ids.sort()
+  const allocatable = ids.findIndex((id, i) => id !== i)
+  return allocatable === -1 ? allocatable : ids.length
+}
+
 const App = () => {
-  // TODO 子側でバリデーション。zod を使うと型変換ができるみたい
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    const option = headerRewriteOptionFrom(data)
-    await saveOptions([...options, option])
-    load()
+  const [rules, setRules] = useState<Rule[]>([])
+
+  const onRemove = (id: number) => {
+    const items = rules.filter((rule) => rule.id !== id)
+    setRules(items)
+    saveRules(items)
   }
 
-  const onRemove = async (id: UuidString) => {
-    const items = options.filter((option) => option.id !== id)
-    await saveOptions(items)
-    load()
+  const onSubmit = (formData: FormInputs) => {
+    const id = findAllocatableId(rules)
+    const rule = convertToRule(id, formData)
+    setRules([...rules, rule])
+    saveRules([...rules, rule])
   }
-
-  const [options, setOptions] = useState<HeaderRewriteOption[]>([])
 
   const load = async () => {
-    const opt = await loadOptions()
-    setOptions(opt)
+    const items = await loadRules()
+    setRules(items)
   }
   useEffect(() => {
     load()
@@ -71,12 +80,12 @@ const App = () => {
       <main>
         <section>
           <h2>options</h2>
-          <OptionList options={options} onRemove={onRemove} />
+          <RuleList rules={rules} onRemove={onRemove} />
         </section>
 
         <section>
           <h2>add option</h2>
-          <AddOptionForm onSubmit={onSubmit} />
+          <AddRuleForm onSubmit={onSubmit} />
         </section>
       </main>
     </>

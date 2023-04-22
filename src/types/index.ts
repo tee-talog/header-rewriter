@@ -43,3 +43,12 @@ export type HeaderRemoveOption = {
 }
 
 export type HeaderRewriteOption = HeaderSetOption | HeaderRemoveOption
+
+// TODO
+// HeaderRewriteRule にリネーム
+export type Rule = {
+  name: string
+  id: number
+  rule: chrome.declarativeNetRequest.Rule
+  enabled: boolean
+}

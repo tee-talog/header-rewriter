@@ -6,6 +6,8 @@ import { HeaderRewriteOption } from "../types"
 import { useEffect, useState } from "react"
 import OptionFile from "./OptionFile"
 import { JsonValue } from "type-fest"
+import { removeRules } from "../hooks/rule"
+import { addRules } from "../hooks/rule"
 
 // フォームの値をオプションに変換する
 const convertToOption = (
@@ -75,8 +77,21 @@ const App = () => {
     saveOptions([...options, option])
   }
 
-  const onImport = (json: JsonValue) => {
-    //
+  const onImport = (importedOptions: HeaderRewriteOption[]) => {
+    setOptions(importedOptions)
+    saveOptions(importedOptions)
+
+    // ON になっているルールをすべて OFF にする
+    const removeIds = options
+      .filter((option) => option.enabled)
+      .map((option) => option.id)
+    removeRules(removeIds)
+
+    // インポートしたルールのうち、必要なものを ON にする
+    const rules = importedOptions
+      .filter((option) => option.enabled)
+      .map((option) => option.rule)
+    addRules(rules)
   }
 
   const onExport = () => {

@@ -1,7 +1,8 @@
 import { JsonValue } from "type-fest"
+import { HeaderRewriteOption } from "../types"
 
 const OptionFile: React.FC<{
-  onImport: (json: JsonValue) => void
+  onImport: (options: HeaderRewriteOption[]) => void
   onExport: () => void
 }> = ({ onImport, onExport }) => {
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,7 +15,9 @@ const OptionFile: React.FC<{
 
     const text = await file.text()
     const json = JSON.parse(text) as JsonValue
-    onImport(json)
+    // TODO validation
+    const options = json as unknown as HeaderRewriteOption[]
+    onImport(options)
   }
 
   return (

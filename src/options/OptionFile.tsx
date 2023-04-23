@@ -1,9 +1,20 @@
+import { JsonValue } from "type-fest"
+
 const OptionFile: React.FC<{
-  onImport: () => void
+  onImport: (json: JsonValue) => void
   onExport: () => void
 }> = ({ onImport, onExport }) => {
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    onImport()
+    const file = event.currentTarget.files?.[0]
+    if (!file) {
+      return
+    }
+    // 同名ファイルを登録できるように、ファイルの選択を解除する
+    event.currentTarget.value = null as any as string
+
+    const text = await file.text()
+    const json = JSON.parse(text) as JsonValue
+    onImport(json)
   }
 
   return (

@@ -5,6 +5,7 @@ import { loadOptions, saveOptions } from "../hooks/storage"
 import { HeaderRewriteOption } from "../types"
 import { useEffect, useState } from "react"
 import OptionFile from "./OptionFile"
+import { JsonValue } from "type-fest"
 
 // フォームの値をオプションに変換する
 const convertToOption = (
@@ -74,7 +75,7 @@ const App = () => {
     saveOptions([...options, option])
   }
 
-  const onImport = () => {
+  const onImport = (json: JsonValue) => {
     //
   }
 

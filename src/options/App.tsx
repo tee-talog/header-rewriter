@@ -68,6 +68,11 @@ const App = () => {
     const items = options.filter((option) => option.id !== id)
     setOptions(items)
     saveOptions(items)
+
+    const enabledIds = items
+      .filter((item) => item.enabled)
+      .map((item) => item.id)
+    removeRules(enabledIds)
   }
 
   const onSubmit = (formData: FormInputs) => {

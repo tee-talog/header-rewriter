@@ -1,6 +1,6 @@
 import "./App.css"
-import OptionList from "./RuleList"
-import AddOptionForm, { FormInputs } from "./AddRuleForm"
+import OptionList from "./OptionList"
+import AddOptionForm, { FormInputs } from "./AddOptionForm"
 import { loadOptions, saveOptions } from "../hooks/storage"
 import { HeaderRewriteOption } from "../types"
 import { useEffect, useState } from "react"
@@ -54,7 +54,7 @@ const findAllocatableId = (options: HeaderRewriteOption[]) => {
   const ids = options.map((option) => option.id)
   ids.sort()
   const allocatable = ids.findIndex((id, i) => id !== i + 1)
-  return allocatable === -1 ? allocatable : ids.length + 1
+  return allocatable === -1 ? ids.length + 1 : allocatable
 }
 
 const App = () => {

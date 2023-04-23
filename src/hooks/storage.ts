@@ -7,5 +7,5 @@ export const saveOptions = (options: HeaderRewriteOption[]) =>
 
 export const loadOptions = async (): Promise<HeaderRewriteOption[]> => {
   const value = await chrome.storage.local.get(OPTION_KEY)
-  return value[OPTION_KEY] as HeaderRewriteOption[]
+  return (value[OPTION_KEY] ?? []) as HeaderRewriteOption[]
 }

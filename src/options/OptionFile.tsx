@@ -3,8 +3,8 @@ import { HeaderRewriteOption } from "../types"
 
 const OptionFile: React.FC<{
   onImport: (options: HeaderRewriteOption[]) => void
-  onExport: () => void
-}> = ({ onImport, onExport }) => {
+  options: HeaderRewriteOption[]
+}> = ({ onImport, options }) => {
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0]
     if (!file) {
@@ -16,8 +16,16 @@ const OptionFile: React.FC<{
     const text = await file.text()
     const json = JSON.parse(text) as JsonValue
     // TODO validation
-    const options = json as unknown as HeaderRewriteOption[]
-    onImport(options)
+    const importedOptions = json as unknown as HeaderRewriteOption[]
+    onImport(importedOptions)
+  }
+
+  // ファイル書き出し
+  const onExport = () => {
+    const str = JSON.stringify(options)
+    const blob = new Blob([str], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
+    chrome.downloads.download({ url, filename: "options.json", saveAs: true })
   }
 
   return (

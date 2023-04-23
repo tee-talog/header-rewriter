@@ -94,10 +94,6 @@ const App = () => {
     addRules(rules)
   }
 
-  const onExport = () => {
-    //
-  }
-
   const load = async () => {
     const items = await loadOptions()
     setOptions(items)
@@ -125,7 +121,7 @@ const App = () => {
 
         <section>
           <h2>import/export</h2>
-          <OptionFile onImport={onImport} onExport={onExport} />
+          <OptionFile onImport={onImport} options={options} />
         </section>
       </main>
     </div>

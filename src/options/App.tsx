@@ -4,6 +4,7 @@ import AddOptionForm, { FormInputs } from "./AddOptionForm"
 import { loadOptions, saveOptions } from "../hooks/storage"
 import { HeaderRewriteOption } from "../types"
 import { useEffect, useState } from "react"
+import OptionFile from "./OptionFile"
 
 // フォームの値をオプションに変換する
 const convertToOption = (
@@ -73,6 +74,14 @@ const App = () => {
     saveOptions([...options, option])
   }
 
+  const onImport = () => {
+    //
+  }
+
+  const onExport = () => {
+    //
+  }
+
   const load = async () => {
     const items = await loadOptions()
     setOptions(items)
@@ -96,6 +105,11 @@ const App = () => {
         <section>
           <h2>add option</h2>
           <AddOptionForm onSubmit={onSubmit} />
+        </section>
+
+        <section>
+          <h2>import/export</h2>
+          <OptionFile onImport={onImport} onExport={onExport} />
         </section>
       </main>
     </div>

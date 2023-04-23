@@ -1,6 +1,74 @@
 import { JsonValue } from "type-fest"
 import { HeaderRewriteOption } from "../types"
 
+// TODO バリデーションライブラリでの実装
+const validateHeaderRewriteOptions = (
+  json: any,
+): json is HeaderRewriteOption[] => {
+  if (json == null || !Array.isArray(json)) {
+    return false
+  }
+
+  return json.every((item) => {
+    if (item == null || typeof item !== "object") {
+      return false
+    }
+
+    if (
+      typeof item.id !== "number" ||
+      typeof item.name !== "string" ||
+      typeof item.enabled !== "boolean" ||
+      item.rule == null ||
+      typeof item.rule !== "object"
+    ) {
+      return false
+    }
+
+    if (
+      typeof item.rule.id !== "number" ||
+      item.rule.action == null ||
+      typeof item.rule.action !== "object" ||
+      item.rule.condition == null ||
+      typeof item.rule.condition !== "object"
+    ) {
+      return false
+    }
+
+    if (typeof item.rule.condition.regexFilter !== "string") {
+      return false
+    }
+
+    if (
+      item.rule.action.type !== "modifyHeaders" ||
+      item.rule.action.requestHeaders == null ||
+      !Array.isArray(item.rule.action.requestHeaders)
+    ) {
+      return false
+    }
+
+    if (item.rule.action.requestHeaders.length !== 1) {
+      return false
+    }
+
+    if (
+      item.rule.action.requestHeaders[0].operation === "set" &&
+      (typeof item.rule.action.requestHeaders[0].header !== "string" ||
+        typeof item.rule.action.requestHeaders[0].value !== "string")
+    ) {
+      return false
+    }
+
+    if (
+      item.rule.action.requestHeaders[0].operation === "remove" &&
+      item.rule.action.requestHeaders[0].value !== undefined
+    ) {
+      return false
+    }
+
+    return true
+  })
+}
+
 const OptionFile: React.FC<{
   onImport: (options: HeaderRewriteOption[]) => void
   options: HeaderRewriteOption[]
@@ -15,9 +83,11 @@ const OptionFile: React.FC<{
 
     const text = await file.text()
     const json = JSON.parse(text) as JsonValue
-    // TODO validation
-    const importedOptions = json as unknown as HeaderRewriteOption[]
-    onImport(importedOptions)
+    if (validateHeaderRewriteOptions(json)) {
+      onImport(json)
+    }
+    // TODO handle error
+    console.log("error")
   }
 
   // ファイル書き出し

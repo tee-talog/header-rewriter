@@ -29,7 +29,7 @@ const AddOptionForm: React.FC<{
         <input type="text" {...register("name", { required: true })} />
       </label>
       <label>
-        pattern
+        pattern https://
         <input type="text" {...register("pattern", { required: true })} />
       </label>
       <label>

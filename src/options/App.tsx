@@ -43,7 +43,7 @@ const convertToOption = (
         requestHeaders,
       },
       condition: {
-        regexFilter: formData.pattern,
+        regexFilter: "^https://" + formData.pattern,
       },
     },
   }

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import "./App.css"
 import { HeaderRewriteOption } from "../types"
 import { loadOptions, saveOptions } from "../hooks/storage"
 import { addRules, removeRules } from "../hooks/rule"

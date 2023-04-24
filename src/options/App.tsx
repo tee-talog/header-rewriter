@@ -1,4 +1,3 @@
-import "./App.css"
 import OptionList from "./OptionList"
 import AddOptionForm, { FormInputs } from "./AddOptionForm"
 import { loadOptions, saveOptions } from "../hooks/storage"

@@ -1,5 +1,6 @@
 import React from "react"
 import { HeaderRewriteOption } from "../types"
+import clsx from "clsx"
 
 const OptionList: React.FC<{
   options: HeaderRewriteOption[]
@@ -16,22 +17,40 @@ const OptionList: React.FC<{
   )
 
   return (
-    <table>
+    <table className={clsx("w-full", "my-2")}>
+      <thead>
+        <tr>
+          <th className={clsx("text-xl", "font-normal", "text-left")}>name</th>
+          <th className={clsx("text-xl", "font-normal", "text-left")}>
+            pattern
+          </th>
+          <th className={clsx("text-xl", "font-normal", "text-left")}>type</th>
+          <th className={clsx("text-xl", "font-normal", "text-left")}>key</th>
+          <th className={clsx("text-xl", "font-normal", "text-left")}>value</th>
+          <th className={clsx("text-xl", "font-normal", "text-left")}></th>
+        </tr>
+      </thead>
       <tbody>
         {options.map((option) => {
           const { operation, header, value } =
             option.rule.action.requestHeaders?.[0] ?? {}
           return (
             <tr key={option.id}>
-              <td>option name: {option.name}</td>
-              <td>regexp: {option.rule.condition.regexFilter}</td>
-              <td>
+              <td className={clsx("text-base")}>{option.name}</td>
+              <td className={clsx("text-base")}>
+                {option.rule.condition.regexFilter}
+              </td>
+              <td className={clsx("text-base", "text-center")}>
                 <ListItem operation={operation} />
               </td>
-              <td>{header ?? ""}</td>
-              <td>{value && value}</td>
-              <td>
-                <button type="button" onClick={() => onRemove(option.id)}>
+              <td className={clsx("text-base")}>{header ?? ""}</td>
+              <td className={clsx("text-base")}>{value && value}</td>
+              <td className={clsx("text-base", "text-center")}>
+                <button
+                  type="button"
+                  onClick={() => onRemove(option.id)}
+                  className={clsx("border", "border-current")}
+                >
                   remove
                 </button>
               </td>

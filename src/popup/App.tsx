@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { HeaderRewriteOption } from "../types"
 import { loadOptions, saveOptions } from "../hooks/storage"
 import { addRules, removeRules } from "../hooks/rule"
+import clsx from "clsx"
 
 const convertToType = (
   type: chrome.declarativeNetRequest.HeaderOperation | undefined,
@@ -38,33 +39,39 @@ const App = () => {
   }, [])
 
   return (
-    <div className="App" style={{ width: "600px" }}>
+    <div className={clsx("min-w-[600px]", "min-h-[100px]", "m-4")}>
       <header>
-        <h1>options</h1>
+        <h1 className={clsx("sr-only")}>options</h1>
       </header>
 
-      <main>
-        <table>
-          <thead>
-            <tr>
-              <th>name</th>
-              <th>pattern</th>
-              <th>type</th>
-              <th>on/off</th>
+      <main className={clsx("w-full", "my-2")}>
+        <table className={clsx("w-full")}>
+          <thead className={clsx("my-2")}>
+            <tr className={clsx("border-b", "leading-8")}>
+              <th className={clsx("text-xl", "font-normal", "text-left")}>
+                name
+              </th>
+              <th className={clsx("text-xl", "font-normal", "text-left")}>
+                pattern
+              </th>
+              <th className={clsx("text-xl", "font-normal", "w-20")}>type</th>
+              <th className={clsx("text-xl", "font-normal", "w-20")}>on/off</th>
             </tr>
           </thead>
 
           <tbody>
             {options.map((option) => (
-              <tr key={option.id}>
-                <td>{option.name}</td>
-                <td>{option.rule.condition.regexFilter}</td>
-                <td>
+              <tr key={option.id} className={clsx("border-b", "leading-8")}>
+                <td className={clsx("text-base")}>{option.name}</td>
+                <td className={clsx("text-base")}>
+                  {option.rule.condition.regexFilter}
+                </td>
+                <td className={clsx("text-base", "text-center")}>
                   {convertToType(
                     option.rule.action.requestHeaders?.[0].operation,
                   )}
                 </td>
-                <td>
+                <td className={clsx("text-base", "text-center")}>
                   <input
                     type="checkbox"
                     checked={option.enabled}

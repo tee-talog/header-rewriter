@@ -1,5 +1,6 @@
 import { JsonValue } from "type-fest"
 import { HeaderRewriteOption } from "../types"
+import clsx from "clsx"
 
 // TODO バリデーションライブラリでの実装
 const validateHeaderRewriteOptions = (
@@ -100,11 +101,20 @@ const OptionFile: React.FC<{
 
   return (
     <>
-      <label>
+      <label className={clsx("border", "border-current")}>
         Import
-        <input type="file" accept="application/json" onChange={onChange} />
+        <input
+          type="file"
+          accept="application/json"
+          onChange={onChange}
+          className={clsx("hidden")}
+        />
       </label>
-      <button type="button" onClick={onExport}>
+      <button
+        type="button"
+        onClick={onExport}
+        className={clsx("border", "border-current")}
+      >
         Export
       </button>
     </>

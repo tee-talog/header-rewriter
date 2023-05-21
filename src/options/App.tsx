@@ -1,4 +1,3 @@
-import "./App.css"
 import OptionList from "./OptionList"
 import AddOptionForm, { FormInputs } from "./AddOptionForm"
 import { loadOptions, saveOptions } from "../hooks/storage"
@@ -8,6 +7,7 @@ import OptionFile from "./OptionFile"
 import { JsonValue } from "type-fest"
 import { removeRules } from "../hooks/rule"
 import { addRules } from "../hooks/rule"
+import clsx from "clsx"
 
 // フォームの値をオプションに変換する
 const convertToOption = (
@@ -108,24 +108,26 @@ const App = () => {
   }, [])
 
   return (
-    <div style={{ width: "800px" }}>
-      <header>
-        <h1>options</h1>
-      </header>
-
+    <div className={clsx("min-w-[1000px]", "min-h-[400px]", "m-4")}>
       <main>
-        <section>
-          <h2>options</h2>
-          <OptionList options={options} onRemove={onRemove} />
+        <section className={clsx("my-4")}>
+          <h2 className={clsx("text-3xl")}>options</h2>
+          <OptionList
+            options={options}
+            onRemove={onRemove}
+            className={clsx("w-full", "my-2")}
+          />
         </section>
 
-        <section>
-          <h2>add option</h2>
+        <section className={clsx("my-4")}>
+          <h2 className={clsx("text-xl", "my-2")}>add option</h2>
           <AddOptionForm onSubmit={onSubmit} />
         </section>
 
-        <section>
-          <h2>import/export</h2>
+        <hr />
+
+        <section className={clsx("my-4")}>
+          <h2 className={clsx("text-xl", "my-2")}>import/export</h2>
           <OptionFile onImport={onImport} options={options} />
         </section>
       </main>

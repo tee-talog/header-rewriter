@@ -1,5 +1,9 @@
 import { JsonValue } from "type-fest"
 import { HeaderRewriteOption } from "../types"
+import clsx from "clsx"
+import Button from "../components/Button"
+import { useRef } from "react"
+import Input from "../components/Input"
 
 // TODO バリデーションライブラリでの実装
 const validateHeaderRewriteOptions = (
@@ -73,6 +77,12 @@ const OptionFile: React.FC<{
   onImport: (options: HeaderRewriteOption[]) => void
   options: HeaderRewriteOption[]
 }> = ({ onImport, options }) => {
+  const refInputFile = useRef<HTMLInputElement>(null)
+
+  const openFileDialog = () => {
+    refInputFile.current?.click()
+  }
+
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0]
     if (!file) {
@@ -85,6 +95,7 @@ const OptionFile: React.FC<{
     const json = JSON.parse(text) as JsonValue
     if (validateHeaderRewriteOptions(json)) {
       onImport(json)
+      return
     }
     // TODO handle error
     console.log("error")
@@ -99,15 +110,22 @@ const OptionFile: React.FC<{
   }
 
   return (
-    <>
-      <label>
+    <div className={clsx("flex", "gap-4")}>
+      <Button type="button" onClick={openFileDialog}>
         Import
-        <input type="file" accept="application/json" onChange={onChange} />
-      </label>
-      <button type="button" onClick={onExport}>
+      </Button>
+      <Input
+        ref={refInputFile}
+        type="file"
+        accept="application/json"
+        onChange={onChange}
+        className={clsx("hidden")}
+      />
+
+      <Button type="button" onClick={onExport}>
         Export
-      </button>
-    </>
+      </Button>
+    </div>
   )
 }
 

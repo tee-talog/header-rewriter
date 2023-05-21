@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react"
-import "./App.css"
 import { HeaderRewriteOption } from "../types"
 import { loadOptions, saveOptions } from "../hooks/storage"
 import { addRules, removeRules } from "../hooks/rule"
-
-const convertToType = (
-  type: chrome.declarativeNetRequest.HeaderOperation | undefined,
-) =>
-  type === chrome.declarativeNetRequest.HeaderOperation.SET ? "set" : "remove"
+import clsx from "clsx"
+import OptionList from "./OptionList"
 
 const App = () => {
   const [options, setOptions] = useState<HeaderRewriteOption[]>([])
@@ -39,43 +35,13 @@ const App = () => {
   }, [])
 
   return (
-    <div className="App" style={{ width: "600px" }}>
+    <div className={clsx("min-w-[600px]", "min-h-[100px]", "m-4")}>
       <header>
-        <h1>options</h1>
+        <h1 className={clsx("sr-only")}>options</h1>
       </header>
 
-      <main>
-        <table>
-          <thead>
-            <tr>
-              <th>name</th>
-              <th>pattern</th>
-              <th>type</th>
-              <th>on/off</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {options.map((option) => (
-              <tr key={option.id}>
-                <td>{option.name}</td>
-                <td>{option.rule.condition.regexFilter}</td>
-                <td>
-                  {convertToType(
-                    option.rule.action.requestHeaders?.[0].operation,
-                  )}
-                </td>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={option.enabled}
-                    onChange={() => changeEnabled(option.id, !option.enabled)}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <main className={clsx("w-full", "my-2")}>
+        <OptionList options={options} onChange={changeEnabled} />
       </main>
     </div>
   )

@@ -110,7 +110,7 @@ const App = () => {
   return (
     <div className={clsx("min-w-[1000px]", "min-h-[400px]", "m-4")}>
       <main>
-        <section className={clsx("my-2")}>
+        <section className={clsx("my-4")}>
           <h2 className={clsx("text-3xl")}>options</h2>
           <OptionList
             options={options}
@@ -119,12 +119,14 @@ const App = () => {
           />
         </section>
 
-        <section className={clsx("my-2")}>
+        <section className={clsx("my-4")}>
           <h2 className={clsx("text-xl", "my-2")}>add option</h2>
           <AddOptionForm onSubmit={onSubmit} />
         </section>
 
-        <section className={clsx("my-2")}>
+        <hr />
+
+        <section className={clsx("my-4")}>
           <h2 className={clsx("text-xl", "my-2")}>import/export</h2>
           <OptionFile onImport={onImport} options={options} />
         </section>

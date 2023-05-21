@@ -2,6 +2,7 @@ import clsx from "clsx"
 import { SubmitHandler, useForm } from "react-hook-form"
 import Button from "../components/Button"
 import Input from "../components/Input"
+import Select from "../components/Select"
 
 export type FormInputs = {
   name: string
@@ -48,13 +49,13 @@ const AddOptionForm: React.FC<{
       </label>
       <label>
         type
-        <select
+        <Select
           {...register("type")}
           className={clsx("ml-4", "border", "border-current")}
         >
           <option value="set">set</option>
           <option value="remove">remove</option>
-        </select>
+        </Select>
       </label>
 
       <label>

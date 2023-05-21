@@ -108,11 +108,15 @@ const App = () => {
   }, [])
 
   return (
-    <div className={clsx("min-w-[800px]", "min-h-[400px]", "m-4")}>
+    <div className={clsx("min-w-[1000px]", "min-h-[400px]", "m-4")}>
       <main>
         <section className={clsx("my-2")}>
           <h2 className={clsx("text-3xl")}>options</h2>
-          <OptionList options={options} onRemove={onRemove} />
+          <OptionList
+            options={options}
+            onRemove={onRemove}
+            className={clsx("w-full", "my-2")}
+          />
         </section>
 
         <section className={clsx("my-2")}>

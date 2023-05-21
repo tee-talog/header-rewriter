@@ -5,28 +5,41 @@ import OptionListItem from "./OptionListItem"
 
 const OptionList: React.FC<{
   options: HeaderRewriteOption[]
+  className: string
   onRemove: (id: number) => void
-}> = ({ options, onRemove }) => {
-  const TableHeaderColumn: React.FC<ComponentProps<"th">> = ({ children }) => {
+}> = ({ options, className, onRemove }) => {
+  const TableHeaderColumn: React.FC<ComponentProps<"th">> = ({
+    className,
+    children,
+  }) => {
     return (
-      <th className={clsx("py-2", "text-xl", "font-normal", "text-left")}>
+      <th
+        className={clsx(
+          className,
+          "py-2",
+          "text-xl",
+          "font-normal",
+          "text-left",
+        )}
+      >
         {children}
       </th>
     )
   }
 
   return (
-    <table className={clsx("w-full", "my-2")}>
+    <table className={clsx(className)}>
       <thead>
         <tr className={clsx("border-b", "border-gray-500")}>
-          <TableHeaderColumn>name</TableHeaderColumn>
+          <TableHeaderColumn className={clsx("w-40")}>name</TableHeaderColumn>
           <TableHeaderColumn>pattern</TableHeaderColumn>
-          <TableHeaderColumn>type</TableHeaderColumn>
-          <TableHeaderColumn>key</TableHeaderColumn>
-          <TableHeaderColumn>value</TableHeaderColumn>
-          <TableHeaderColumn></TableHeaderColumn>
+          <TableHeaderColumn className={clsx("w-16")}>type</TableHeaderColumn>
+          <TableHeaderColumn className={clsx("w-40")}>key</TableHeaderColumn>
+          <TableHeaderColumn className={clsx("w-40")}>value</TableHeaderColumn>
+          <TableHeaderColumn className={clsx("w-24")}></TableHeaderColumn>
         </tr>
       </thead>
+
       <tbody>
         {options.map((option) => {
           const { operation, header, value } =

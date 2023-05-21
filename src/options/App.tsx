@@ -4,7 +4,6 @@ import { loadOptions, saveOptions } from "../hooks/storage"
 import { HeaderRewriteOption } from "../types"
 import { useEffect, useState } from "react"
 import OptionFile from "./OptionFile"
-import { JsonValue } from "type-fest"
 import { removeRules } from "../hooks/rule"
 import { addRules } from "../hooks/rule"
 import clsx from "clsx"
@@ -64,15 +63,20 @@ const findAllocatableId = (options: HeaderRewriteOption[]) => {
 const App = () => {
   const [options, setOptions] = useState<HeaderRewriteOption[]>([])
 
-  const onRemove = (id: number) => {
-    const items = options.filter((option) => option.id !== id)
-    setOptions(items)
-    saveOptions(items)
+  const onRemove = async (id: number) => {
+    // 最新のオプションを取ってくる
+    const loadedOptions = await loadOptions()
 
-    const enabledIds = items
-      .filter((item) => item.enabled)
+    // 有効になっている設定があれば無効化する
+    const enabledIds = loadedOptions
+      .filter((item) => item.id === id && item.enabled)
       .map((item) => item.id)
     removeRules(enabledIds)
+
+    // オプションを削除する
+    const items = loadedOptions.filter((option) => option.id !== id)
+    setOptions(items)
+    saveOptions(items)
   }
 
   const onSubmit = (formData: FormInputs) => {

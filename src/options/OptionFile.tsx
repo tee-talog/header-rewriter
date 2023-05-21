@@ -109,7 +109,7 @@ const OptionFile: React.FC<{
   }
 
   return (
-    <>
+    <div className={clsx("flex", "gap-4")}>
       <Button type="button" onClick={openFileDialog}>
         Import
       </Button>
@@ -124,7 +124,7 @@ const OptionFile: React.FC<{
       <Button type="button" onClick={onExport}>
         Export
       </Button>
-    </>
+    </div>
   )
 }
 

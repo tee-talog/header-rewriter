@@ -125,7 +125,7 @@ const App = () => {
         </section>
 
         <section className={clsx("my-2")}>
-          <h2 className={clsx("text-xl")}>import/export</h2>
+          <h2 className={clsx("text-xl", "my-2")}>import/export</h2>
           <OptionFile onImport={onImport} options={options} />
         </section>
       </main>

@@ -3,6 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import Button from "../components/Button"
 import Input from "../components/Input"
 import Select from "../components/Select"
+import React, { ReactNode } from "react"
 
 export type FormInputs = {
   name: string
@@ -15,6 +16,18 @@ export type FormInputs = {
 const AddOptionForm: React.FC<{
   onSubmit: SubmitHandler<FormInputs>
 }> = ({ onSubmit }) => {
+  const FormItem: React.FC<{
+    label: string
+    children: ReactNode
+  }> = ({ label, children }) => {
+    return (
+      <label className={clsx("flex", "items-center")}>
+        <span className={clsx("w-20")}>{label}</span>
+        <div>{children}</div>
+      </label>
+    )
+  }
+
   const {
     register,
     handleSubmit,
@@ -31,51 +44,30 @@ const AddOptionForm: React.FC<{
       onSubmit={handleSubmit(onSubmit)}
       className={clsx("flex", "flex-col", "gap-1", "items-start", "text-base")}
     >
-      <label>
-        name
-        <Input
-          type="text"
-          {...register("name", { required: true })}
-          className={clsx("ml-4", "border", "border-current")}
-        />
-      </label>
-      <label>
-        pattern https://
-        <Input
-          type="text"
-          {...register("pattern", { required: true })}
-          className={clsx("ml-4", "border", "border-current")}
-        />
-      </label>
-      <label>
-        type
-        <Select
-          {...register("type")}
-          className={clsx("ml-4", "border", "border-current")}
-        >
+      <FormItem label="name">
+        <Input type="text" {...register("name", { required: true })} />
+      </FormItem>
+
+      <FormItem label="pattern">
+        https://
+        <Input type="text" {...register("pattern", { required: true })} />
+      </FormItem>
+
+      <FormItem label="type">
+        <Select {...register("type")}>
           <option value="set">set</option>
           <option value="remove">remove</option>
         </Select>
-      </label>
+      </FormItem>
 
-      <label>
-        header
-        <Input
-          type="text"
-          {...register("key", { required: true })}
-          className={clsx("ml-4", "border", "border-current")}
-        />
-      </label>
+      <FormItem label="header">
+        <Input type="text" {...register("key", { required: true })} />
+      </FormItem>
 
       {isTypeSet && (
-        <label>
-          value
-          <Input
-            type="text"
-            {...register("value")}
-            className={clsx("ml-4", "border", "border-current")}
-          />
-        </label>
+        <FormItem label="value">
+          <Input type="text" {...register("value")} />
+        </FormItem>
       )}
 
       <Button type="submit" disabled={!isValid}>

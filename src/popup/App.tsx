@@ -3,6 +3,7 @@ import { HeaderRewriteOption } from "../types"
 import { loadOptions, saveOptions } from "../hooks/storage"
 import { addRules, removeRules } from "../hooks/rule"
 import clsx from "clsx"
+import Input from "../components/Input"
 
 const convertToType = (
   type: chrome.declarativeNetRequest.HeaderOperation | undefined,
@@ -72,7 +73,7 @@ const App = () => {
                   )}
                 </td>
                 <td className={clsx("text-base", "text-center")}>
-                  <input
+                  <Input
                     type="checkbox"
                     checked={option.enabled}
                     onChange={() => changeEnabled(option.id, !option.enabled)}

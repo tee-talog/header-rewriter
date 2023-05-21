@@ -3,6 +3,7 @@ import { HeaderRewriteOption } from "../types"
 import clsx from "clsx"
 import Button from "../components/Button"
 import { useRef } from "react"
+import Input from "../components/Input"
 
 // TODO バリデーションライブラリでの実装
 const validateHeaderRewriteOptions = (
@@ -112,7 +113,7 @@ const OptionFile: React.FC<{
       <Button type="button" onClick={openFileDialog}>
         Import
       </Button>
-      <input
+      <Input
         ref={refInputFile}
         type="file"
         accept="application/json"

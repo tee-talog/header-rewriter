@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import { SubmitHandler, useForm } from "react-hook-form"
 import Button from "../components/Button"
+import Input from "../components/Input"
 
 export type FormInputs = {
   name: string
@@ -31,7 +32,7 @@ const AddOptionForm: React.FC<{
     >
       <label>
         name
-        <input
+        <Input
           type="text"
           {...register("name", { required: true })}
           className={clsx("ml-4", "border", "border-current")}
@@ -39,7 +40,7 @@ const AddOptionForm: React.FC<{
       </label>
       <label>
         pattern https://
-        <input
+        <Input
           type="text"
           {...register("pattern", { required: true })}
           className={clsx("ml-4", "border", "border-current")}
@@ -58,7 +59,7 @@ const AddOptionForm: React.FC<{
 
       <label>
         header
-        <input
+        <Input
           type="text"
           {...register("key", { required: true })}
           className={clsx("ml-4", "border", "border-current")}
@@ -68,7 +69,7 @@ const AddOptionForm: React.FC<{
       {isTypeSet && (
         <label>
           value
-          <input
+          <Input
             type="text"
             {...register("value")}
             className={clsx("ml-4", "border", "border-current")}

@@ -51,6 +51,7 @@ const OptionList: React.FC<{
 
           return (
             <OptionListItem
+              key={option.id}
               id={option.id}
               name={option.name}
               regexFilter={option.rule.condition.regexFilter}

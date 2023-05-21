@@ -12,7 +12,7 @@ const OptionListItem: React.FC<{
   onRemove: (id: number) => void
 }> = ({ id, name, regexFilter, operation, header, value, onRemove }) => {
   return (
-    <tr key={id} className={clsx("border-b", "border-gray-300")}>
+    <tr className={clsx("border-b", "border-gray-300")}>
       <OptionListItemColumn>{name}</OptionListItemColumn>
       <OptionListItemColumn>{regexFilter}</OptionListItemColumn>
       <OptionListItemColumn>{operation}</OptionListItemColumn>

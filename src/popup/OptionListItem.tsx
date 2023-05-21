@@ -10,7 +10,7 @@ const OptionListItem: React.FC<{
   onChange: (id: number, enable: boolean) => void
 }> = ({ id, name, regexFilter, operation, enabled, onChange }) => {
   return (
-    <tr key={id} className={clsx("border-b", "leading-8")}>
+    <tr className={clsx("border-b", "leading-8")}>
       <td className={clsx("text-base")}>{name}</td>
       <td className={clsx("text-base")}>{regexFilter}</td>
       <td className={clsx("text-base", "text-center")}>{operation}</td>

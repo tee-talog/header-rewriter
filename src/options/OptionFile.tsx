@@ -95,6 +95,7 @@ const OptionFile: React.FC<{
     const json = JSON.parse(text) as JsonValue
     if (validateHeaderRewriteOptions(json)) {
       onImport(json)
+      return
     }
     // TODO handle error
     console.log("error")

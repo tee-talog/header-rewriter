@@ -14,12 +14,16 @@ const OptionListItem: React.FC<{
       <td className={clsx("text-base")}>{name}</td>
       <td className={clsx("text-base")}>{regexFilter}</td>
       <td className={clsx("text-base", "text-center")}>{operation}</td>
-      <td className={clsx("text-base", "text-center")}>
-        <Input
-          type="checkbox"
-          checked={enabled}
-          onChange={() => onChange(id, !enabled)}
-        />
+      <td
+        className={clsx("text-base", "text-center", "flex", "justify-center")}
+      >
+        <label className={clsx("p-2")}>
+          <Input
+            type="checkbox"
+            checked={enabled}
+            onChange={() => onChange(id, !enabled)}
+          />
+        </label>
       </td>
     </tr>
   )

@@ -12,7 +12,6 @@ const Input: React.FC<ComponentProps<"input">> = ({ className, ...props }) => {
         "rounded",
         "border-gray-500",
         "focus:bg-gray-100",
-        "min-w-[5rem]",
         "text-base",
         "text-gray-900",
       )}

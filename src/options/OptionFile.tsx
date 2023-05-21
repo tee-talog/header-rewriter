@@ -2,6 +2,7 @@ import { JsonValue } from "type-fest"
 import { HeaderRewriteOption } from "../types"
 import clsx from "clsx"
 import Button from "../components/Button"
+import { useRef } from "react"
 
 // TODO バリデーションライブラリでの実装
 const validateHeaderRewriteOptions = (
@@ -75,6 +76,12 @@ const OptionFile: React.FC<{
   onImport: (options: HeaderRewriteOption[]) => void
   options: HeaderRewriteOption[]
 }> = ({ onImport, options }) => {
+  const refInputFile = useRef<HTMLInputElement>(null)
+
+  const openFileDialog = () => {
+    refInputFile.current?.click()
+  }
+
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0]
     if (!file) {
@@ -102,15 +109,17 @@ const OptionFile: React.FC<{
 
   return (
     <>
-      <label className={clsx("border", "border-current")}>
+      <Button type="button" onClick={openFileDialog}>
         Import
-        <input
-          type="file"
-          accept="application/json"
-          onChange={onChange}
-          className={clsx("hidden")}
-        />
-      </label>
+      </Button>
+      <input
+        ref={refInputFile}
+        type="file"
+        accept="application/json"
+        onChange={onChange}
+        className={clsx("hidden")}
+      />
+
       <Button type="button" onClick={onExport}>
         Export
       </Button>

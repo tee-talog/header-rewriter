@@ -1,6 +1,7 @@
 import React from "react"
 import { HeaderRewriteOption } from "../types"
 import clsx from "clsx"
+import Button from "../components/Button"
 
 const OptionList: React.FC<{
   options: HeaderRewriteOption[]
@@ -46,13 +47,9 @@ const OptionList: React.FC<{
               <td className={clsx("text-base")}>{header ?? ""}</td>
               <td className={clsx("text-base")}>{value && value}</td>
               <td className={clsx("text-base", "text-center")}>
-                <button
-                  type="button"
-                  onClick={() => onRemove(option.id)}
-                  className={clsx("border", "border-current")}
-                >
+                <Button type="button" onClick={() => onRemove(option.id)}>
                   remove
-                </button>
+                </Button>
               </td>
             </tr>
           )

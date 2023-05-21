@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import { SubmitHandler, useForm } from "react-hook-form"
+import Button from "../components/Button"
 
 export type FormInputs = {
   name: string
@@ -75,13 +76,9 @@ const AddOptionForm: React.FC<{
         </label>
       )}
 
-      <button
-        type="submit"
-        disabled={!isValid}
-        className={clsx("border", "border-current")}
-      >
+      <Button type="submit" disabled={!isValid}>
         add
-      </button>
+      </Button>
     </form>
   )
 }

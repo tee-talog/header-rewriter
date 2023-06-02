@@ -13,21 +13,21 @@ export type FormInputs = {
   value?: string
 }
 
+const FormItem: React.FC<{
+  label: string
+  children: ReactNode
+}> = ({ label, children }) => {
+  return (
+    <label className={clsx("flex", "items-center")}>
+      <span className={clsx("w-20")}>{label}</span>
+      <div>{children}</div>
+    </label>
+  )
+}
+
 const AddOptionForm: React.FC<{
   onSubmit: SubmitHandler<FormInputs>
 }> = ({ onSubmit }) => {
-  const FormItem: React.FC<{
-    label: string
-    children: ReactNode
-  }> = ({ label, children }) => {
-    return (
-      <label className={clsx("flex", "items-center")}>
-        <span className={clsx("w-20")}>{label}</span>
-        <div>{children}</div>
-      </label>
-    )
-  }
-
   const {
     register,
     handleSubmit,

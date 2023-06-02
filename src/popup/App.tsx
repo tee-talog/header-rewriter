@@ -36,10 +36,10 @@ const App = () => {
     }
 
     if (enabled) {
-      const item = options.find((option) => option.id === id)
-      if (item) {
-        addRules([item.rule])
-      }
+      const rules = options
+        .filter((option) => option.id === id)
+        .map((option) => option.rule)
+      addRules(rules)
     } else {
       removeRules([id])
     }

@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import Button from "../components/Button"
 import Input from "../components/Input"
 import Select from "../components/Select"
@@ -26,16 +26,14 @@ const FormItem: React.FC<{
 }
 
 const AddOptionForm: React.FC<{
-  onSubmit: SubmitHandler<FormInputs>
+  onSubmit: (inputs: FormInputs) => void
 }> = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
     watch,
     formState: { isValid },
-  } = useForm<FormInputs>({
-    defaultValues: { type: "set", key: "", value: "" },
-  })
+  } = useFormContext<FormInputs>()
 
   const isTypeSet = watch("type") === "set"
 

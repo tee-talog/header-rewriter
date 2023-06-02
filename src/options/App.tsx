@@ -88,6 +88,7 @@ const App = () => {
     const option = convertToOption(id, formData)
     setOptions([...options, option])
     saveOptions([...options, option])
+    methods.reset()
   }
 
   const onImport = (importedOptions: HeaderRewriteOption[]) => {

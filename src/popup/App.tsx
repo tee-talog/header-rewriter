@@ -6,7 +6,20 @@ import clsx from "clsx"
 import OptionList from "./OptionList"
 
 const App = () => {
+  const [enabled, setEnabled] = useState(true)
   const [options, setOptions] = useState<HeaderRewriteOption[]>([])
+
+  // ルール全体の ON/OFF を切り替える
+  const handleChange = () => {
+    const enabledOptions = options.filter((option) => option.enabled)
+    if (enabled) {
+      removeRules(enabledOptions.map(({ id }) => id))
+    } else {
+      addRules(enabledOptions.map(({ rule }) => rule))
+    }
+
+    setEnabled((val) => !val)
+  }
 
   // ルールの ON/OFF を切り替える
   const changeEnabled = (id: number, enabled: boolean) => {
@@ -41,6 +54,9 @@ const App = () => {
       </header>
 
       <main className={clsx("w-full", "my-2")}>
+        <div>
+          <input type="checkbox" checked={enabled} onChange={handleChange} />
+        </div>
         <OptionList options={options} onChange={changeEnabled} />
       </main>
     </div>

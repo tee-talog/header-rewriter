@@ -7,6 +7,7 @@ import OptionFile from "./OptionFile"
 import { removeRules } from "../hooks/rule"
 import { addRules } from "../hooks/rule"
 import clsx from "clsx"
+import { FormProvider, useForm } from "react-hook-form"
 
 // フォームの値をオプションに変換する
 const convertToOption = (
@@ -62,6 +63,9 @@ const findAllocatableId = (options: HeaderRewriteOption[]) => {
 
 const App = () => {
   const [options, setOptions] = useState<HeaderRewriteOption[]>([])
+  const methods = useForm<FormInputs>({
+    defaultValues: { type: "set", key: "", value: "" },
+  })
 
   const onRemove = async (id: number) => {
     // 最新のオプションを取ってくる
@@ -125,7 +129,9 @@ const App = () => {
 
         <section className={clsx("my-4")}>
           <h2 className={clsx("text-xl", "my-2")}>add option</h2>
-          <AddOptionForm onSubmit={onSubmit} />
+          <FormProvider {...methods}>
+            <AddOptionForm onSubmit={onSubmit} />
+          </FormProvider>
         </section>
 
         <hr />

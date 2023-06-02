@@ -4,3 +4,9 @@ export type HeaderRewriteOption = {
   rule: chrome.declarativeNetRequest.Rule
   enabled: boolean
 }
+
+export type ApplicationConfig = {
+  version: 1
+  options: HeaderRewriteOption[]
+  enabled: boolean
+}

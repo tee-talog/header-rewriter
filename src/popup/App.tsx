@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react"
 import { HeaderRewriteOption } from "../types"
-import { loadOptions, saveOptions } from "../hooks/storage"
+import { loadConfig, saveConfig } from "../hooks/storage"
 import { addRules, removeRules } from "../hooks/rule"
 import clsx from "clsx"
 import OptionList from "./OptionList"
 
 const App = () => {
-  const [enabled, setEnabled] = useState(true)
+  const [enabledAll, setEnabledAll] = useState(true)
   const [options, setOptions] = useState<HeaderRewriteOption[]>([])
 
   // ルール全体の ON/OFF を切り替える
   const handleChange = () => {
     const enabledOptions = options.filter((option) => option.enabled)
-    if (enabled) {
+    if (enabledAll) {
       removeRules(enabledOptions.map(({ id }) => id))
     } else {
       addRules(enabledOptions.map(({ rule }) => rule))
     }
 
-    setEnabled((val) => !val)
+    saveConfig(options, !enabledAll)
+    setEnabledAll((val) => !val)
   }
 
   // ルールの ON/OFF を切り替える
@@ -27,7 +28,12 @@ const App = () => {
       option.id === id ? { ...option, enabled } : option,
     )
     setOptions(items)
-    saveOptions(items)
+    saveConfig(items, enabledAll)
+
+    // 全体が OFF なら実際には切り替えない
+    if (!enabledAll) {
+      return
+    }
 
     if (enabled) {
       const item = options.find((option) => option.id === id)
@@ -40,8 +46,9 @@ const App = () => {
   }
 
   const load = async () => {
-    const items = await loadOptions()
-    setOptions(items)
+    const { options, enabled } = await loadConfig()
+    setOptions(options)
+    setEnabledAll(enabled)
   }
   useEffect(() => {
     load()
@@ -55,7 +62,7 @@ const App = () => {
 
       <main className={clsx("w-full", "my-2")}>
         <div>
-          <input type="checkbox" checked={enabled} onChange={handleChange} />
+          <input type="checkbox" checked={enabledAll} onChange={handleChange} />
         </div>
         <OptionList options={options} onChange={changeEnabled} />
       </main>

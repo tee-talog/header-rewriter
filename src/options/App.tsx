@@ -1,6 +1,6 @@
 import OptionList from "./OptionList"
 import AddOptionForm, { FormInputs } from "./AddOptionForm"
-import { loadOptions, saveOptions } from "../hooks/storage"
+import { loadConfig, saveConfig } from "../hooks/storage"
 import { HeaderRewriteOption } from "../types"
 import { useEffect, useState } from "react"
 import OptionFile from "./OptionFile"
@@ -62,6 +62,7 @@ const findAllocatableId = (options: HeaderRewriteOption[]) => {
 }
 
 const App = () => {
+  const [enabledAll, setEnabledAll] = useState(true)
   const [options, setOptions] = useState<HeaderRewriteOption[]>([])
   const methods = useForm<FormInputs>({
     defaultValues: { type: "set", key: "", value: "" },
@@ -69,31 +70,32 @@ const App = () => {
 
   const onRemove = async (id: number) => {
     // 最新のオプションを取ってくる
-    const loadedOptions = await loadOptions()
+    const config = await loadConfig()
 
     // 有効になっている設定があれば無効化する
-    const enabledIds = loadedOptions
+    const enabledIds = config.options
       .filter((item) => item.id === id && item.enabled)
       .map((item) => item.id)
     removeRules(enabledIds)
 
     // オプションを削除する
-    const items = loadedOptions.filter((option) => option.id !== id)
+    const items = config.options.filter((option) => option.id !== id)
     setOptions(items)
-    saveOptions(items)
+    setEnabledAll(config.enabled)
+    saveConfig(items, config.enabled)
   }
 
   const onSubmit = (formData: FormInputs) => {
     const id = findAllocatableId(options)
     const option = convertToOption(id, formData)
     setOptions([...options, option])
-    saveOptions([...options, option])
+    saveConfig([...options, option], enabledAll)
     methods.reset()
   }
 
   const onImport = (importedOptions: HeaderRewriteOption[]) => {
     setOptions(importedOptions)
-    saveOptions(importedOptions)
+    saveConfig(importedOptions, enabledAll)
 
     // ON になっているルールをすべて OFF にする
     const removeIds = options
@@ -109,8 +111,9 @@ const App = () => {
   }
 
   const load = async () => {
-    const items = await loadOptions()
-    setOptions(items)
+    const config = await loadConfig()
+    setOptions(config.options)
+    setEnabledAll(config.enabled)
   }
   useEffect(() => {
     load()

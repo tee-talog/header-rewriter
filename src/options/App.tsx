@@ -81,8 +81,8 @@ const App = () => {
     // オプションを削除する
     const items = config.options.filter((option) => option.id !== id)
     setOptions(items)
-    setEnabledAll(config.enabled)
-    saveConfig(items, config.enabled)
+    setEnabledAll(config.enabledAll)
+    saveConfig(items, config.enabledAll)
   }
 
   const onSubmit = (formData: FormInputs) => {
@@ -113,7 +113,7 @@ const App = () => {
   const load = async () => {
     const config = await loadConfig()
     setOptions(config.options)
-    setEnabledAll(config.enabled)
+    setEnabledAll(config.enabledAll)
   }
   useEffect(() => {
     load()
@@ -142,7 +142,11 @@ const App = () => {
 
         <section className={clsx("my-4")}>
           <h2 className={clsx("text-xl", "my-2")}>import/export</h2>
-          <OptionFile onImport={onImport} options={options} />
+          <OptionFile
+            onImport={onImport}
+            options={options}
+            enabledAll={enabledAll}
+          />
         </section>
       </main>
     </div>

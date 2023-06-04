@@ -1,19 +1,30 @@
 import { JsonValue } from "type-fest"
-import { HeaderRewriteOption } from "../types"
+import { ApplicationConfig, HeaderRewriteOption } from "../types"
 import clsx from "clsx"
 import Button from "../components/Button"
 import { useRef } from "react"
 import Input from "../components/Input"
 
 // TODO バリデーションライブラリでの実装
-const validateHeaderRewriteOptions = (
-  json: any,
-): json is HeaderRewriteOption[] => {
-  if (json == null || !Array.isArray(json)) {
+const validateHeaderRewriteOptions = (json: any): json is ApplicationConfig => {
+  if (json == null) {
     return false
   }
 
-  return json.every((item) => {
+  const { options, version, enabledAll } = json
+
+  if (version !== 1) {
+    return false
+  }
+  if (typeof enabledAll !== "boolean") {
+    return false
+  }
+
+  if (options == null || !Array.isArray(options)) {
+    return false
+  }
+
+  return options.every((item) => {
     if (item == null || typeof item !== "object") {
       return false
     }
@@ -74,9 +85,10 @@ const validateHeaderRewriteOptions = (
 }
 
 const OptionFile: React.FC<{
-  onImport: (options: HeaderRewriteOption[]) => void
+  onImport: (options: HeaderRewriteOption[], enabled: boolean) => void
   options: HeaderRewriteOption[]
-}> = ({ onImport, options }) => {
+  enabledAll: boolean
+}> = ({ onImport, options, enabledAll }) => {
   const refInputFile = useRef<HTMLInputElement>(null)
 
   const openFileDialog = () => {
@@ -94,7 +106,7 @@ const OptionFile: React.FC<{
     const text = await file.text()
     const json = JSON.parse(text) as JsonValue
     if (validateHeaderRewriteOptions(json)) {
-      onImport(json)
+      onImport(json.options, json.enabledAll)
       return
     }
     // TODO handle error
@@ -103,7 +115,7 @@ const OptionFile: React.FC<{
 
   // ファイル書き出し
   const onExport = () => {
-    const str = JSON.stringify(options)
+    const str = JSON.stringify({ options, enabledAll, version: 1 })
     const blob = new Blob([str], { type: "application/json" })
     const url = URL.createObjectURL(blob)
     chrome.downloads.download({ url, filename: "options.json", saveAs: true })

@@ -8,5 +8,5 @@ export type HeaderRewriteOption = {
 export type ApplicationConfig = {
   version: 1
   options: HeaderRewriteOption[]
-  enabled: boolean
+  enabledAll: boolean
 }

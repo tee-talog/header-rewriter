@@ -2,11 +2,14 @@ import { ApplicationConfig, HeaderRewriteOption } from "../types"
 
 const OPTION_KEY = "HEADER_REWRITE_APPLICATION_CONFIG"
 
-export const saveConfig = (options: HeaderRewriteOption[], enabled = true) => {
+export const saveConfig = (
+  options: HeaderRewriteOption[],
+  enabledAll = true,
+) => {
   const config = {
     options,
     version: 1,
-    enabled,
+    enabledAll,
   }
   chrome.storage.local.set({ [OPTION_KEY]: config })
 }
@@ -17,7 +20,7 @@ export const loadConfig = async (): Promise<ApplicationConfig> => {
     value?.[OPTION_KEY] ?? {
       options: [],
       version: 1,
-      enabled: true,
+      enabledAll: true,
     }
   )
 }

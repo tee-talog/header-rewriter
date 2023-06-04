@@ -46,7 +46,7 @@ const App = () => {
   }
 
   const load = async () => {
-    const { options, enabled } = await loadConfig()
+    const { options, enabledAll: enabled } = await loadConfig()
     setOptions(options)
     setEnabledAll(enabled)
   }

@@ -95,7 +95,7 @@ const OptionFile: React.FC<{
     refInputFile.current?.click()
   }
 
-  const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const importFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0]
     if (!file) {
       return
@@ -114,7 +114,7 @@ const OptionFile: React.FC<{
   }
 
   // ファイル書き出し
-  const onExport = () => {
+  const exportOptions = () => {
     const str = JSON.stringify({ options, enabledAll, version: 1 })
     const blob = new Blob([str], { type: "application/json" })
     const url = URL.createObjectURL(blob)
@@ -130,11 +130,11 @@ const OptionFile: React.FC<{
         ref={refInputFile}
         type="file"
         accept="application/json"
-        onChange={onChange}
+        onChange={importFile}
         className={clsx("hidden")}
       />
 
-      <Button type="button" onClick={onExport}>
+      <Button type="button" onClick={exportOptions}>
         エクスポート
       </Button>
     </div>

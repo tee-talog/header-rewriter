@@ -68,7 +68,7 @@ const App = () => {
     defaultValues: { type: "set", key: "", value: "" },
   })
 
-  const onRemove = async (id: number) => {
+  const removeOption = async (id: number) => {
     // 最新のオプションを取ってくる
     const config = await loadConfig()
 
@@ -85,7 +85,7 @@ const App = () => {
     saveConfig(items, config.enabledAll)
   }
 
-  const onSubmit = (formData: FormInputs) => {
+  const addOption = (formData: FormInputs) => {
     const id = findAllocatableId(options)
     const option = convertToOption(id, formData)
     setOptions([...options, option])
@@ -93,7 +93,7 @@ const App = () => {
     methods.reset()
   }
 
-  const onImport = (importedOptions: HeaderRewriteOption[]) => {
+  const importOptions = (importedOptions: HeaderRewriteOption[]) => {
     setOptions(importedOptions)
     saveConfig(importedOptions, enabledAll)
 
@@ -126,7 +126,7 @@ const App = () => {
           <h2 className={clsx("text-3xl", "sr-only")}>オプション</h2>
           <OptionList
             options={options}
-            onRemove={onRemove}
+            onRemove={removeOption}
             className={clsx("w-full", "my-2")}
           />
         </section>
@@ -136,7 +136,7 @@ const App = () => {
             オプションを追加
           </h2>
           <FormProvider {...methods}>
-            <AddOptionForm onSubmit={onSubmit} />
+            <AddOptionForm onSubmit={addOption} />
           </FormProvider>
         </section>
 
@@ -147,7 +147,7 @@ const App = () => {
             インポート / エクスポート
           </h2>
           <OptionFile
-            onImport={onImport}
+            onImport={importOptions}
             options={options}
             enabledAll={enabledAll}
           />

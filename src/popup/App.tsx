@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { HeaderRewriteOption } from "../types"
-import { loadConfig, saveConfig } from "../hooks/storage"
-import { addRules, removeRules } from "../hooks/rule"
+import { loadConfig, saveConfig } from "../modules/storage"
+import { addRules, removeRules } from "../modules/rule"
 import clsx from "clsx"
 import OptionList from "./OptionList"
 

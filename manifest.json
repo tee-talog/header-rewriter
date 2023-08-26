@@ -2,8 +2,15 @@
   "manifest_version": 3,
   "name": "Header Rewriter",
   "version": "0.0.1",
+  "description": "特定の URL へのアクセス時に HTTP のリクエストヘッダーの追加・削除ができる Chrome 拡張機能です。",
+  "author": "tee-talog",
   "action": { "default_popup": "src/popup/index.html" },
   "options_ui": { "page": "src/options/index.html" },
   "permissions": ["declarativeNetRequest", "storage", "downloads"],
-  "host_permissions": ["<all_urls>"]
+  "host_permissions": ["<all_urls>"],
+  "icons": {
+    "16": "src/icons/icon16.png",
+    "48": "src/icons/icon48.png",
+    "128": "src/icons/icon128.png"
+  }
 }

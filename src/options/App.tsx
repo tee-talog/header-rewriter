@@ -123,7 +123,7 @@ const App = () => {
     <div className={clsx("min-w-[1000px]", "min-h-[400px]", "m-4")}>
       <main>
         <section className={clsx("my-4")}>
-          <h2 className={clsx("text-3xl")}>オプション</h2>
+          <h2 className={clsx("text-3xl", "sr-only")}>オプション</h2>
           <OptionList
             options={options}
             onRemove={onRemove}
@@ -132,7 +132,9 @@ const App = () => {
         </section>
 
         <section className={clsx("my-4")}>
-          <h2 className={clsx("text-xl", "my-2")}>オプションを追加</h2>
+          <h2 className={clsx("text-xl", "my-2", "sr-only")}>
+            オプションを追加
+          </h2>
           <FormProvider {...methods}>
             <AddOptionForm onSubmit={onSubmit} />
           </FormProvider>
@@ -141,7 +143,9 @@ const App = () => {
         <hr />
 
         <section className={clsx("my-4")}>
-          <h2 className={clsx("text-xl", "my-2")}>インポート / エクスポート</h2>
+          <h2 className={clsx("text-xl", "my-2", "sr-only")}>
+            インポート / エクスポート
+          </h2>
           <OptionFile
             onImport={onImport}
             options={options}

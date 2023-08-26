@@ -42,34 +42,34 @@ const AddOptionForm: React.FC<{
       onSubmit={handleSubmit(onSubmit)}
       className={clsx("flex", "flex-col", "gap-1", "items-start", "text-base")}
     >
-      <FormItem label="name">
+      <FormItem label="名前">
         <Input type="text" {...register("name", { required: true })} />
       </FormItem>
 
-      <FormItem label="pattern">
+      <FormItem label="パターン">
         https://
         <Input type="text" {...register("pattern", { required: true })} />
       </FormItem>
 
-      <FormItem label="type">
+      <FormItem label="タイプ">
         <Select {...register("type")}>
           <option value="set">set</option>
           <option value="remove">remove</option>
         </Select>
       </FormItem>
 
-      <FormItem label="header">
+      <FormItem label="キー">
         <Input type="text" {...register("key", { required: true })} />
       </FormItem>
 
       {isTypeSet && (
-        <FormItem label="value">
+        <FormItem label="値">
           <Input type="text" {...register("value")} />
         </FormItem>
       )}
 
       <Button type="submit" disabled={!isValid}>
-        add
+        追加
       </Button>
     </form>
   )

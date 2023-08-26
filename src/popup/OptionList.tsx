@@ -15,12 +15,12 @@ const OptionList: React.FC<{
     <table className={clsx("w-full")}>
       <thead className={clsx("my-2")}>
         <tr className={clsx("border-b", "leading-8")}>
-          <th className={clsx("text-xl", "font-normal", "text-left")}>name</th>
+          <th className={clsx("text-xl", "font-normal", "text-left")}>名前</th>
           <th className={clsx("text-xl", "font-normal", "text-left")}>
-            pattern
+            パターン
           </th>
-          <th className={clsx("text-xl", "font-normal", "w-20")}>type</th>
-          <th className={clsx("text-xl", "font-normal", "w-20")}>on/off</th>
+          <th className={clsx("text-xl", "font-normal", "w-20")}>タイプ</th>
+          <th className={clsx("text-xl", "font-normal", "w-20")}>ON/OFF</th>
         </tr>
       </thead>
 

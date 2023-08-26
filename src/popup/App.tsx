@@ -57,7 +57,7 @@ const App = () => {
   return (
     <div className={clsx("min-w-[600px]", "min-h-[100px]", "m-4")}>
       <header>
-        <h1 className={clsx("sr-only")}>options</h1>
+        <h1 className={clsx("sr-only")}>オプション</h1>
       </header>
 
       <main className={clsx("w-full", "my-2")}>

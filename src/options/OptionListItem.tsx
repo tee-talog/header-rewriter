@@ -20,7 +20,7 @@ const OptionListItem: React.FC<{
       <OptionListItemColumn>{value && value}</OptionListItemColumn>
       <OptionListItemColumn>
         <Button type="button" onClick={() => onRemove(id)}>
-          remove
+          削除
         </Button>
       </OptionListItemColumn>
     </tr>

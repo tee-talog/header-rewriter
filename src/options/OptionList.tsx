@@ -31,11 +31,11 @@ const OptionList: React.FC<{
     <table className={clsx(className)}>
       <thead>
         <tr className={clsx("border-b", "border-gray-500")}>
-          <TableHeaderColumn className={clsx("w-40")}>name</TableHeaderColumn>
-          <TableHeaderColumn>pattern</TableHeaderColumn>
-          <TableHeaderColumn className={clsx("w-16")}>type</TableHeaderColumn>
-          <TableHeaderColumn className={clsx("w-40")}>key</TableHeaderColumn>
-          <TableHeaderColumn className={clsx("w-40")}>value</TableHeaderColumn>
+          <TableHeaderColumn className={clsx("w-40")}>名前</TableHeaderColumn>
+          <TableHeaderColumn>パターン</TableHeaderColumn>
+          <TableHeaderColumn className={clsx("w-16")}>タイプ</TableHeaderColumn>
+          <TableHeaderColumn className={clsx("w-40")}>キー</TableHeaderColumn>
+          <TableHeaderColumn className={clsx("w-40")}>値</TableHeaderColumn>
           <TableHeaderColumn className={clsx("w-24")}></TableHeaderColumn>
         </tr>
       </thead>

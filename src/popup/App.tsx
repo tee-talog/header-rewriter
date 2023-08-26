@@ -61,10 +61,22 @@ const App = () => {
       </header>
 
       <main className={clsx("w-full", "my-2")}>
-        <div>
-          <input type="checkbox" checked={enabledAll} onChange={handleChange} />
-        </div>
-        <OptionList options={options} onChange={changeEnabled} />
+        <section className={clsx("my-2")}>
+          <label className={clsx("flex", "items-center")}>
+            <input
+              type="checkbox"
+              checked={enabledAll}
+              onChange={handleChange}
+              className={clsx("mr-1")}
+            />
+            一括ON/OFF
+          </label>
+        </section>
+
+        <section>
+          <h2 className={clsx("sr-only")}>オプション</h2>
+          <OptionList options={options} onChange={changeEnabled} />
+        </section>
       </main>
     </div>
   )
